@@ -11,9 +11,9 @@ import glob
 import re
 
 FLAGS = None
-INPUT = "../raw_csvs/classes/browsing/reg/CICNTTor_browsing.raw.csv"#"../dataset/iscxNTVPN2016/CompletePCAPs" # ""
-INPUT_DIR = "../raw_csvs/classes/chat/vpn/"
-CLASSES_DIR = "../raw_csvs/classes/**/**/"
+INPUT = "../classes/browsing/reg/CICNTTor_browsing.raw.csv"#"../dataset/iscxNTVPN2016/CompletePCAPs" # ""
+INPUT_DIR = "../classes/browsing/reg/"
+CLASSES_DIR = "../classes/**/**/"
 
 # LABEL_IND = 1
 TPS = 60 # TimePerSession in secs
@@ -158,13 +158,15 @@ def iterate_all_classes():
         if "other" not in class_dir: #"browsing" not in class_dir and
             print("working on " + class_dir)
             dataset = traffic_class_converter(class_dir)
-            print(dataset.shape)
-            export_class_dataset(dataset, class_dir)
+            np.save(class_dir.split("/")[2] + "_" + class_dir.split("/")[3], dataset)
+            #random_sampling_dataset(dataset, size=2000, dir_path=class_dir)
+            #print(dataset.shape)
+            #export_class_dataset(dataset, class_dir)
 
 
-def random_sampling_dataset(input_array, size=2000):
-    print("Import dataset " + input_array)
-    dataset = np.load(input_array)
+def random_sampling_dataset(dataset, size=2000, dir_path=""):
+    #print("Import dataset " + input_array)
+    #dataset = np.load(input_array)
     print(dataset.shape)
     p = size*1.0/len(dataset)
     print(p)
@@ -175,22 +177,24 @@ def random_sampling_dataset(input_array, size=2000):
     dataset = dataset[mask]
     print("Start export dataset")
 
-    np.save(os.path.splitext(input_array)[0] + "_samp", dataset)
+    #np.save(os.path.splitext(input_array)[0] + "_samp", dataset)
+    np.save(dir_path.split("/")[2] + "_" + dir_path.split("/")[3], dataset)
+    #np.save("browsing_reg_samp", dataset)
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--input', type=str, default=INPUT, help='Path to csv file')
+    #parser = argparse.ArgumentParser()
+    #parser.add_argument('--input', type=str, default=INPUT, help='Path to csv file')
 
-    FLAGS = parser.parse_args()
+    #FLAGS = parser.parse_args()
     ##
-    # iterate_all_classes()
+    iterate_all_classes()
 
-    # dataset = traffic_class_converter(INPUT_DIR)
-    # dataset = traffic_csv_converter(INPUT)
+    #dataset = traffic_class_converter(INPUT_DIR)
+    #dataset = traffic_csv_converter(INPUT)
 
-    input_array = "../raw_csvs/classes/browsing/reg/browsing_reg.npy"
-    random_sampling_dataset(input_array)
+    #input_array = "../raw_csvs/classes/browsing/reg/browsing_reg.npy"
+    #random_sampling_dataset(dataset)
 
 
     # export_class_dataset(dataset)
