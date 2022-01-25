@@ -15,6 +15,8 @@ INPUT = "../classes/browsing/reg/CICNTTor_browsing.raw.csv"#"../dataset/iscxNTVP
 INPUT_DIR = "../classes/browsing/reg/"
 CLASSES_DIR = "../classes/**/**/"
 
+class_names = {"voip":0, "video":1, "file_transfer":2, "chat":3, "browsing":4}
+
 # LABEL_IND = 1
 TPS = 60 # TimePerSession in secs
 DELTA_T = 60 # Delta T between splitted sessions
@@ -159,7 +161,9 @@ def iterate_all_classes():
             print("working on " + class_dir)
             dataset = traffic_class_converter(class_dir)
             file_name = class_dir.split("/")[2] + "_" + class_dir.split("/")[3]
-            np.save(os.path.join('input', file_name), dataset)
+            #np.save(os.path.join('input', file_name), dataset)
+            labels=class_names[class_dir.split("/")[2]]*dataset.shape[0]
+            np.savez(os.path.join('input', file_name), X=dataset, Y=labels)
             #random_sampling_dataset(dataset, size=2000, dir_path=class_dir)
             #print(dataset.shape)
             #export_class_dataset(dataset, class_dir)
