@@ -160,9 +160,11 @@ def iterate_all_classes():
         if "other" not in class_dir: #"browsing" not in class_dir and
             print("working on " + class_dir)
             dataset = traffic_class_converter(class_dir)
-            file_name = class_dir.split("/")[2] + "_" + class_dir.split("/")[3]
+            traffic_ctg = class_dir.split("/")[2]
+            traffic_enc = class_dir.split("/")[3]
+            file_name = traffic_ctg + "_" + traffic_enc
             #np.save(os.path.join('input', file_name), dataset)
-            labels=class_names[class_dir.split("/")[2]]*dataset.shape[0]
+            labels=[class_names[traffic_ctg]]*dataset.shape[0]
             np.savez(os.path.join('input', file_name), X=dataset, Y=labels)
             #random_sampling_dataset(dataset, size=2000, dir_path=class_dir)
             #print(dataset.shape)
