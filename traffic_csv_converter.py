@@ -76,7 +76,7 @@ def traffic_class_converter(dir_path):
     return np.concatenate(dataset_tuple, axis=0)
 
 
-def export_dataset():
+def export_dataset(class_dir):
     print("Working on " + class_dir)
     dataset = traffic_class_converter(class_dir)
     traffic_ctg = class_dir.split("/")[2]
