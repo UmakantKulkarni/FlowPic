@@ -13,8 +13,8 @@ CLASSES_DIR = "../classes/**/**/"
 CLASS_LABELS = {"voip": 0, "video": 1, "file_transfer": 2, "chat": 3, "browsing": 4}
 
 TPS = 60  # TimePerSession in secs
-DELTA_T = 60  # Delta T between splitted sessions
-MIN_TPS = 50
+DELTA_T = 15  # Delta T between splitted sessions
+MIN_TPS = 40
 
 
 def traffic_csv_converter(file_path):
