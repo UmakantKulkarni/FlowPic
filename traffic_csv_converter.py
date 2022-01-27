@@ -96,6 +96,7 @@ def traffic_class_converter(dir_path):
 def export_dataset(class_dir):
     print("Working on " + class_dir)
     dataset = traffic_class_converter(class_dir)
+    print("Dataset shape is ", dataset.shape)
     traffic_ctg = class_dir.split("/")[2]
     traffic_enc = class_dir.split("/")[3]
     file_name = traffic_ctg + "_" + traffic_enc
