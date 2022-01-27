@@ -18,7 +18,6 @@ def traffic_csv_converter(file_path):
     dataset = []
     # labels = []
     counter = 0
-    ck = 0
     with open(file_path, 'r') as csv_file:
         if "voip/reg" in file_path:
             DELTA_T = 30
@@ -28,20 +27,10 @@ def traffic_csv_converter(file_path):
             MIN_TPS = 40
         reader = csv.reader(csv_file)
         for i, row in enumerate(reader):
-            if ck == 0:
-                print("Working on PCAP file ", np.array(row[0]))
-                ck = 1
             if "browsing/reg" in file_path:
                 MIN_TPS = 50
                 if np.array(row[0]) != "browsing" and np.array(row[0]) != "browsing2-1" and np.array(row[0]) != "SSL_Browsing":
-                    if ck == 1:
-                        print("Skipping PCAP file ", np.array(row[0]))
-                        ck = 2
                     continue
-                else:
-                    if ck == 1:
-                        print("Working on PCAP file ", np.array(row[0]))
-                        ck = 2
             # print row[0], row[7]
             session_tuple_key = tuple(row[:8])
             length = int(row[7])
