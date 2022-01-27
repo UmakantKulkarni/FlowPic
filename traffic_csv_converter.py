@@ -7,14 +7,10 @@ import os
 import csv
 from sessions_plotter import *
 import glob
-from multiprocessing import Process
 
 CLASSES_DIR = "../classes/**/**/"
 CLASS_LABELS = {"voip": 0, "video": 1, "file_transfer": 2, "chat": 3, "browsing": 4}
-
 TPS = 60  # TimePerSession in secs
-DELTA_T = 15  # Delta T between splitted sessions
-MIN_TPS = 40
 
 
 def traffic_csv_converter(file_path):
@@ -22,9 +18,30 @@ def traffic_csv_converter(file_path):
     dataset = []
     # labels = []
     counter = 0
+    ck = 0
     with open(file_path, 'r') as csv_file:
+        if "voip/reg" in file_path:
+            DELTA_T = 30
+            MIN_TPS = 50
+        else:
+            DELTA_T = 15
+            MIN_TPS = 40
         reader = csv.reader(csv_file)
         for i, row in enumerate(reader):
+            if ck == 0:
+                print("Working on PCAP file ", np.array(row[0]))
+                ck = 1
+            if "browsing/reg" in file_path:
+                MIN_TPS = 50
+                if np.array(row[0]) != "browsing" and np.array(row[0]) != "browsing2-1" and np.array(row[0]) != "SSL_Browsing":
+                    if ck == 1:
+                        print("Skipping PCAP file ", np.array(row[0]))
+                        ck = 2
+                    continue
+                else:
+                    if ck == 1:
+                        print("Working on PCAP file ", np.array(row[0]))
+                        ck = 2
             # print row[0], row[7]
             session_tuple_key = tuple(row[:8])
             length = int(row[7])
@@ -110,9 +127,4 @@ if __name__ == '__main__':
     jobs = []
     for class_dir in glob.glob(CLASSES_DIR):
         if "other" not in class_dir:  # "browsing" not in class_dir and
-            p = Process(target=export_dataset,
-                        args=(class_dir, ))
-            jobs.append(p)
-            p.start()
-    for proc in jobs:
-        proc.join()
+            export_dataset(class_dir)
