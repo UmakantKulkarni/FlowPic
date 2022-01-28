@@ -1,0 +1,14 @@
+apt-get update && apt-get -y upgrade && apt-get update
+apt -y install curl wget apache2-utils default-jre default-jdk wget git vim nano make g++ net-tools iproute2 libssl-dev tcpdump jq iputils-ping apt-transport-https nghttp2-client bash-completion xauth gcc autoconf libtool pkg-config sshpass python3 python3-setuptools python3-pip
+pip3 install h2 numpy scipy pandas matplotlib scikit-learn gdown
+cd /mydata/
+git clone https://github.com/UmakantKulkarni/FlowPic
+cd FlowPic/
+git checkout uk1
+git pull
+cd ..
+gdown --id 1gz61vnMANj-4hKNvZv1KFK9LajR91X-m
+unzip FlowPic_raw_csvs.zip
+mv classes_csvs classes
+cd FlowPic/
+./traffic_csv_converter.py 
