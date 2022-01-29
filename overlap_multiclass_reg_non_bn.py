@@ -9,11 +9,10 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.utils import np_utils
-from keras.layers.normalization import BatchNormalization
+#from keras.layers.normalization import BatchNormalization
 from keras.callbacks import TensorBoard,ModelCheckpoint
 from keras import backend as K
-from keras.metrics import top_k_categorical_accuracy
-import os
+from keras.metrics import top_k_categorical_accuracy 
 
 
 # def set_keras_backend(backend):
@@ -34,13 +33,14 @@ batch_size = 128 #128
 samples_per_epoch = 10
 num_classes = 5
 epochs = 40
-class_names = ["voip", "video", "file transfer", "chat", "browsing"]
+class_names = ["voip", "video", "file_transfer", "chat", "browsing"]
 
 # input hist dimensions
 height, width = 1500, 1500
 input_shape = (1, height, width)
 MODEL_NAME = "overlap_multiclass_reg_non_bn"
-PATH_PREFIX = "D:/TS/Internet Traffic Classification/datasets/overlap_multiclass_reg/overlap_multiclass_"
+#PATH_PREFIX = "D:/TS/Internet Traffic Classification/datasets/overlap_multiclass_reg/overlap_multiclass_"
+PATH_PREFIX = "/mydata/FlowPic/output/"
 
 
 # ### Import Train and Validation Data
@@ -309,7 +309,7 @@ def generator(features, labels, batch_size):
 
 history = model.fit_generator(generator(x_train, y_train, batch_size),
           epochs=epochs,
-          samples_per_epoch=samples_per_epoch,
+          steps_per_epoch=samples_per_epoch,
           verbose=1,
           callbacks=[tensorboard,checkpointer_loss,checkpointer_acc],
           validation_data=(x_val, y_val))
