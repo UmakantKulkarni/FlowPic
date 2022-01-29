@@ -9,7 +9,7 @@ import random
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras.layers import Conv2D, MaxPooling2D
-from keras.utils import np_utils
+from tensorflow.keras import utils
 #from keras.layers.normalization import BatchNormalization
 from tensorflow.keras.layers import BatchNormalization, Activation, Permute
 from tensorflow.keras.callbacks import TensorBoard,ModelCheckpoint
@@ -73,8 +73,8 @@ print(y_train_true[0:10])
 
 # ### convert class vectors to binary class matrices
 
-y_train = np_utils.to_categorical(y_train_true, num_classes)
-y_val = np_utils.to_categorical(y_val_true, num_classes)
+y_train = utils.to_categorical(y_train_true, num_classes)
+y_val = utils.to_categorical(y_val_true, num_classes)
 print(y_train[0:10])
 print (y_val[0:10])
 print(y_train.shape, y_val.shape)
@@ -117,11 +117,12 @@ def top_2_categorical_accuracy(y_true, y_pred):
     return top_k_categorical_accuracy(y_true, y_pred, k=2) 
 
 
-model = Sequential(tf.keras.layers.InputLayer(input_shape=input_shape))
+#model = Sequential(tf.keras.layers.InputLayer(input_shape=input_shape))
+#model.add(Permute((2, 3, 1)))
+#model.add(BatchNormalization(axis=-1))
+#model.add(Permute((3, 1, 2)))
+model = Sequential()
 #model.add(BatchNormalization(input_shape=input_shape, axis=-1, momentum=0.99, epsilon=0.001)) ############################
-model.add(Permute((2, 3, 1)))
-model.add(BatchNormalization(axis=-1))
-model.add(Permute((3, 1, 2)))
 model.add(Conv2D(10, kernel_size=(10, 10),strides=5,padding="same", input_shape=input_shape))
 convout1 = Activation('relu')
 model.add(convout1)
@@ -260,7 +261,7 @@ def get_layer_output(layer, input_img, layer_name):
     return C
     
 
-if 0:
+if 1:
     C1 = get_layer_output(convout1, x_train[i:i+1], layer_name="convout1_before")
     mosaic_imshow(C1, 2, 5, cmap=cm.binary, border=2, layer_name="convout1_before")
     plotNNFilter(C1, 2, 5, cmap=cm.binary, layer_name="convout1_before")
@@ -505,8 +506,8 @@ y_test_vpn_true = np.load(PATH_PREFIX + "vpn_y_test.npy")
 x_test_tor = np.load(PATH_PREFIX + "tor_x_test.npy")
 y_test_tor_true = np.load(PATH_PREFIX + "tor_y_test.npy")
 
-y_test_vpn = np_utils.to_categorical(y_test_vpn_true, num_classes)
-y_test_tor = np_utils.to_categorical(y_test_tor_true, num_classes)
+y_test_vpn = utils.to_categorical(y_test_vpn_true, num_classes)
+y_test_tor = utils.to_categorical(y_test_tor_true, num_classes)
 
 print(x_test_vpn.shape, y_test_vpn.shape)
 print(x_test_tor.shape, y_test_tor.shape)
