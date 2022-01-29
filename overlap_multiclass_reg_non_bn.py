@@ -3,16 +3,18 @@
 
 # ### Import Libraries
 
+import tensorflow as tf
 import numpy as np
 import random
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Flatten
+from tensorflow.keras.layers import Conv2D, MaxPooling2D
 from keras.utils import np_utils
 #from keras.layers.normalization import BatchNormalization
-from keras.callbacks import TensorBoard,ModelCheckpoint
-from keras import backend as K
-from keras.metrics import top_k_categorical_accuracy 
+from tensorflow.keras.layers import BatchNormalization, Activation, Permute
+from tensorflow.keras.callbacks import TensorBoard,ModelCheckpoint
+from tensorflow.keras import backend as K
+from tensorflow.keras.metrics import top_k_categorical_accuracy 
 
 
 # def set_keras_backend(backend):
@@ -114,10 +116,12 @@ def f1_score(y_true, y_pred):
 def top_2_categorical_accuracy(y_true, y_pred):
     return top_k_categorical_accuracy(y_true, y_pred, k=2) 
 
-from keras.layers.core import Activation
 
-model = Sequential()
-# model.add(BatchNormalization(input_shape=input_shape, axis=-1, momentum=0.99, epsilon=0.001)) ############################
+model = Sequential(tf.keras.layers.InputLayer(input_shape=input_shape))
+#model.add(BatchNormalization(input_shape=input_shape, axis=-1, momentum=0.99, epsilon=0.001)) ############################
+model.add(Permute((2, 3, 1)))
+model.add(BatchNormalization(axis=-1))
+model.add(Permute((3, 1, 2)))
 model.add(Conv2D(10, kernel_size=(10, 10),strides=5,padding="same", input_shape=input_shape))
 convout1 = Activation('relu')
 model.add(convout1)
@@ -139,7 +143,7 @@ model.add(Dropout(0.5))
 print(model.output_shape)
 model.add(Dense(num_classes, activation='softmax'))
 print(model.output_shape)
-
+model.summary()
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy', top_2_categorical_accuracy, f1_score, precision, recall])
 
 
@@ -256,35 +260,36 @@ def get_layer_output(layer, input_img, layer_name):
     return C
     
 
-C1 = get_layer_output(convout1, x_train[i:i+1], layer_name="convout1_before")
-mosaic_imshow(C1, 2, 5, cmap=cm.binary, border=2, layer_name="convout1_before")
-plotNNFilter(C1, 2, 5, cmap=cm.binary, layer_name="convout1_before")
-plotNNFilter2(C1, 2, 5, cmap=cm.binary, layer_name="convout1_before")
+if 0:
+    C1 = get_layer_output(convout1, x_train[i:i+1], layer_name="convout1_before")
+    mosaic_imshow(C1, 2, 5, cmap=cm.binary, border=2, layer_name="convout1_before")
+    plotNNFilter(C1, 2, 5, cmap=cm.binary, layer_name="convout1_before")
+    plotNNFilter2(C1, 2, 5, cmap=cm.binary, layer_name="convout1_before")
 
-C2 = get_layer_output(convout2, x_train[i:i+1], layer_name="convout2_before")
-mosaic_imshow(C2, 4, 5, cmap=cm.binary, border=2, layer_name="convout2_before")
-plotNNFilter(C2, 4, 5, cmap=cm.binary, layer_name="convout2_before")
-plotNNFilter2(C2, 4, 5, cmap=cm.binary, layer_name="convout2_before")
+    C2 = get_layer_output(convout2, x_train[i:i+1], layer_name="convout2_before")
+    mosaic_imshow(C2, 4, 5, cmap=cm.binary, border=2, layer_name="convout2_before")
+    plotNNFilter(C2, 4, 5, cmap=cm.binary, layer_name="convout2_before")
+    plotNNFilter2(C2, 4, 5, cmap=cm.binary, layer_name="convout2_before")
 
 
-# Visualize weights
-W1 = model.layers[0].get_weights()[0]
-W1 = np.squeeze(W1)
-# W1 = np.asarray(W1)
-print("W1 shape : ", W1.shape)
+    # Visualize weights
+    W1 = model.layers[0].get_weights()[0]
+    W1 = np.squeeze(W1)
+    # W1 = np.asarray(W1)
+    print("W1 shape : ", W1.shape)
 
-mosaic_imshow(W1, 2, 5, cmap=cm.binary, border=1, layer_name="conv1_weights_before")
-plotNNFilter(W1, 2, 5, cmap=cm.binary, layer_name="conv1_weights_before")
-plotNNFilter2(W1, 2, 5, cmap=cm.binary, layer_name="conv1_weights_before")
+    mosaic_imshow(W1, 2, 5, cmap=cm.binary, border=1, layer_name="conv1_weights_before")
+    plotNNFilter(W1, 2, 5, cmap=cm.binary, layer_name="conv1_weights_before")
+    plotNNFilter2(W1, 2, 5, cmap=cm.binary, layer_name="conv1_weights_before")
 
-# Visualize weights
-W2 = model.layers[3].get_weights()[0][:,:,0,:]
-W2 = np.asarray(W2)
-print("W2 shape : ", W2.shape)
+    # Visualize weights
+    W2 = model.layers[3].get_weights()[0][:,:,0,:]
+    W2 = np.asarray(W2)
+    print("W2 shape : ", W2.shape)
 
-mosaic_imshow(W2, 4, 5, cmap=cm.binary, border=1, layer_name="conv2_weights_before")
-plotNNFilter(W2, 4, 5, cmap=cm.binary, layer_name="conv2_weights_before")
-plotNNFilter2(W2, 4, 5, cmap=cm.binary, layer_name="conv2_weights_before")
+    mosaic_imshow(W2, 4, 5, cmap=cm.binary, border=1, layer_name="conv2_weights_before")
+    plotNNFilter(W2, 4, 5, cmap=cm.binary, layer_name="conv2_weights_before")
+    plotNNFilter2(W2, 4, 5, cmap=cm.binary, layer_name="conv2_weights_before")
 
 
 # ### Fit model on training data
