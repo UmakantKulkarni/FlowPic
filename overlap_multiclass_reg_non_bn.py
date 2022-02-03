@@ -334,14 +334,14 @@ print(history.history.keys())
 x = np.asarray(range(1,epochs + 1))
 # summarize history for accuracy
 plt.figure()
-plt.plot(x, history.history['acc'])
-plt.plot(x, history.history['val_acc'])
+plt.plot(x, history.history['accuracy'])
+plt.plot(x, history.history['val_accuracy'])
 plt.title('model accuracy')
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
 plt.legend(['train', 'val'], loc='upper left')
 plt.savefig(MODEL_NAME +  " accuracy history", bbox_inches='tight', pad_inches=1)
-plt.show()
+#plt.show()
 
 
 # ### Plot Confusion Matrix
@@ -413,7 +413,7 @@ plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True,
                       title='Normalized confusion matrix',
                       fname=MODEL_NAME + "_" + 'Normalized_confusion_matrix')
 
-plt.show()
+#plt.show()
 
 
 def stats(y_true, y_pred):
@@ -560,7 +560,7 @@ plot_confusion_matrix(cnf_matrix_tor, classes=class_names, normalize=True,
                       title='Normalized confusion matrix for tor test set',
                       fname=MODEL_NAME + "_test_tor_" + 'Normalized_confusion_matrix')
 
-plt.show()
+#plt.show()
 
 
 # ### Save Model and weights
