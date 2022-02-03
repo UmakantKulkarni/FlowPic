@@ -42,7 +42,7 @@ height, width = 1500, 1500
 input_shape = (1, height, width)
 MODEL_NAME = "overlap_multiclass_reg_non_bn"
 #PATH_PREFIX = "D:/TS/Internet Traffic Classification/datasets/overlap_multiclass_reg/overlap_multiclass_"
-PATH_PREFIX = "/mydata/FlowPic/output/"
+PATH_PREFIX = "/mydata/flow_pic/FlowPic/output/"
 
 
 # ### Import Train and Validation Data
@@ -186,7 +186,7 @@ def plotNNFilter2(data, nrows, ncols, layer_name, cmap=None, bar=True):
         fig.colorbar(im, ax=axes.ravel().tolist())
     
     pl.savefig(MODEL_NAME +  "_plotNNFilter2_" + layer_name, bbox_inches='tight', pad_inches=1)
-    pl.show()
+    #pl.show()
 
 def plotNNFilter(data, nrows, ncols, layer_name, cmap=None, bar=True):
     """Wrapper around pl.subplot"""
@@ -203,7 +203,7 @@ def plotNNFilter(data, nrows, ncols, layer_name, cmap=None, bar=True):
         pl.gca().invert_yaxis()
     pl.subplots_adjust(wspace=0.025, hspace=0.05)
     pl.savefig(MODEL_NAME +  "_plotNNFilter_" + layer_name, bbox_inches='tight', pad_inches=1)
-    pl.show()
+    #pl.show()
         
 def make_mosaic(imgs, nrows, ncols, border=1):
     """
@@ -232,7 +232,7 @@ def mosaic_imshow(imgs, nrows, ncols, cmap=None, border=1, layer_name="convout")
 #     pl.suptitle('convout2')
     nice_imshow(pl.gca(), make_mosaic(imgs, nrows, ncols, border=border), cmap=cmap)
     pl.savefig(MODEL_NAME +  "_mosaic_imshow_" + layer_name, bbox_inches='tight', pad_inches=1)
-    pl.show()
+    #pl.show()
 
 # pl.imshow(make_mosaic(np.random.random((10, 10, 9)), 3, 3, border=1))
 # pl.show()
@@ -247,7 +247,7 @@ pl.figure(figsize=(15, 15))
 pl.title('input')
 nice_imshow(pl.gca(), np.squeeze(X), vmin=0, vmax=1, cmap=cm.binary)
 pl.savefig(MODEL_NAME +  "_input", bbox_inches='tight', pad_inches=1)
-pl.show()
+#pl.show()
 
 # Visualize convolution result (after activation)
 def get_layer_output(layer, input_img, layer_name):
@@ -443,7 +443,7 @@ print(y_train_true[i])
 pl.figure(figsize=(15, 15))
 nice_imshow(pl.gca(), np.squeeze(X), vmin=0, vmax=1, cmap=cm.binary)
 pl.savefig(MODEL_NAME +  "_input_" + str(int(y_train_true[i])), bbox_inches='tight', pad_inches=1)
-pl.show()
+#pl.show()
 
 # Visualize convolution result (after activation)
 def get_layer_output(layer, input_img, layer_name):
