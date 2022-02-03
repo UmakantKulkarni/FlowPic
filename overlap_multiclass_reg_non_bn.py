@@ -316,7 +316,7 @@ def generator(features, labels, batch_size):
 history = model.fit_generator(generator(x_train, y_train, batch_size),
           epochs=epochs,
           steps_per_epoch=samples_per_epoch,
-          verbose=1,
+          verbose=2,
           callbacks=[tensorboard,checkpointer_loss,checkpointer_acc],
           validation_data=(x_val, y_val))
 
