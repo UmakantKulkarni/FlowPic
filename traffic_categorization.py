@@ -190,6 +190,7 @@ def plotNNFilter2(data, nrows, ncols, layer_name, cmap=None, bar=True):
 
     pl.savefig(op_dir +  "plotNNFilter2_" + layer_name, bbox_inches='tight', pad_inches=1)
     #pl.show()
+    pl.close()
 
 def plotNNFilter(data, nrows, ncols, layer_name, cmap=None, bar=True):
     """Wrapper around pl.subplot"""
@@ -207,6 +208,7 @@ def plotNNFilter(data, nrows, ncols, layer_name, cmap=None, bar=True):
     pl.subplots_adjust(wspace=0.025, hspace=0.05)
     pl.savefig(op_dir +  "plotNNFilter_" + layer_name, bbox_inches='tight', pad_inches=1)
     #pl.show()
+    pl.close()
 
 def make_mosaic(imgs, nrows, ncols, border=1):
     """
@@ -236,6 +238,7 @@ def mosaic_imshow(imgs, nrows, ncols, cmap=None, border=1, layer_name="convout")
     nice_imshow(pl.gca(), make_mosaic(imgs, nrows, ncols, border=border), cmap=cmap)
     pl.savefig(op_dir +  "mosaic_imshow_" + layer_name, bbox_inches='tight', pad_inches=1)
     #pl.show()
+    pl.close()
 
 # pl.imshow(make_mosaic(np.random.random((10, 10, 9)), 3, 3, border=1))
 # pl.show()
@@ -251,6 +254,7 @@ pl.title('input')
 nice_imshow(pl.gca(), np.squeeze(X), vmin=0, vmax=1, cmap=cm.binary)
 pl.savefig(op_dir +  "input", bbox_inches='tight', pad_inches=1)
 #pl.show()
+pl.close()
 
 # Visualize convolution result (after activation)
 def get_layer_output(layer, input_img, layer_name):
@@ -345,6 +349,7 @@ plt.xlabel('epoch')
 plt.legend(['train', 'val'], loc='upper left')
 plt.savefig(op_dir +  "accuracy_history", bbox_inches='tight', pad_inches=1)
 #plt.show()
+plt.close()
 
 
 # ### Plot Confusion Matrix
@@ -399,6 +404,7 @@ def plot_confusion_matrix(cm, classes,
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     plt.savefig(fname, bbox_inches='tight', pad_inches=1)
+    plt.close()
 
 # Compute confusion matrix
 cnf_matrix = confusion_matrix(y_val_true, y_val_prediction)
@@ -447,6 +453,7 @@ pl.figure(figsize=(15, 15))
 nice_imshow(pl.gca(), np.squeeze(X), vmin=0, vmax=1, cmap=cm.binary)
 pl.savefig(op_dir +  "input_" + str(int(y_train_true[i])), bbox_inches='tight', pad_inches=1)
 #pl.show()
+pl.close()
 
 # Visualize convolution result (after activation)
 def get_layer_output(layer, input_img, layer_name):
@@ -500,6 +507,7 @@ for j in range(len(y_val_true)):
 #         nice_imshow(pl.gca(), np.squeeze(x_val[j]), vmin=0, vmax=1, cmap=cm.binary)
 #         pl.savefig(op_dir +  "input", bbox_inches='tight', pad_inches=1)
 #         pl.show()
+#         pl.close()
 
 print(print_saperator)
 
@@ -522,15 +530,16 @@ print(print_saperator)
 
 x_test = np.load(PATH_PREFIX + "{}_x_test.npy".format(traffic_file_type))
 y_test_true = np.load(PATH_PREFIX + "{}_y_test.npy".format(traffic_file_type))
+y_test = utils.to_categorical(y_test_true, num_classes)
 
-score = model.evaluate(x_test, y_test_true, verbose=1)
+score = model.evaluate(x_test, y_test, verbose=1)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 print('Test top_2_categorical_accuracy:', score[2])
 
 y_test_prediction = model.predict_classes(x_test, verbose=1)
 cnf_matrix = confusion_matrix(y_test_true, y_test_prediction)
-y_test = utils.to_categorical(y_test_true, num_classes)
+
 print(x_test.shape, y_test.shape)
 
 # Plot normalized confusion matrix
