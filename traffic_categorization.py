@@ -3,6 +3,7 @@
 
 # ### Import Libraries
 
+import os
 import tensorflow as tf
 import numpy as np
 import random
@@ -41,8 +42,10 @@ print_saperator = "#############################################################
 # input hist dimensions
 height, width = 1500, 1500
 input_shape = (1, height, width)
-MODEL_NAME = "overlap_multiclass_{}_non_bn".format(traffic_file_type)
+MODEL_NAME = "traffic_categorization_{}".format(traffic_file_type)
 PATH_PREFIX = "/mydata/flow_pic/FlowPic/output/"
+op_dir = "/mydata/flow_pic/FlowPic/{}_output/".format(MODEL_NAME)
+os.makedirs(op_dir, exist_ok=True)
 
 
 # ### Import Train and Validation Data
@@ -185,7 +188,7 @@ def plotNNFilter2(data, nrows, ncols, layer_name, cmap=None, bar=True):
     if bar:
         fig.colorbar(im, ax=axes.ravel().tolist())
 
-    pl.savefig(MODEL_NAME +  "_plotNNFilter2_" + layer_name, bbox_inches='tight', pad_inches=1)
+    pl.savefig(op_dir +  "plotNNFilter2_" + layer_name, bbox_inches='tight', pad_inches=1)
     #pl.show()
 
 def plotNNFilter(data, nrows, ncols, layer_name, cmap=None, bar=True):
@@ -202,7 +205,7 @@ def plotNNFilter(data, nrows, ncols, layer_name, cmap=None, bar=True):
         pl.yticks([])
         pl.gca().invert_yaxis()
     pl.subplots_adjust(wspace=0.025, hspace=0.05)
-    pl.savefig(MODEL_NAME +  "_plotNNFilter_" + layer_name, bbox_inches='tight', pad_inches=1)
+    pl.savefig(op_dir +  "plotNNFilter_" + layer_name, bbox_inches='tight', pad_inches=1)
     #pl.show()
 
 def make_mosaic(imgs, nrows, ncols, border=1):
@@ -231,7 +234,7 @@ def mosaic_imshow(imgs, nrows, ncols, cmap=None, border=1, layer_name="convout")
     pl.figure(figsize=(3*ncols, 3*nrows))
     #     pl.suptitle('convout2')
     nice_imshow(pl.gca(), make_mosaic(imgs, nrows, ncols, border=border), cmap=cmap)
-    pl.savefig(MODEL_NAME +  "_mosaic_imshow_" + layer_name, bbox_inches='tight', pad_inches=1)
+    pl.savefig(op_dir +  "mosaic_imshow_" + layer_name, bbox_inches='tight', pad_inches=1)
     #pl.show()
 
 # pl.imshow(make_mosaic(np.random.random((10, 10, 9)), 3, 3, border=1))
@@ -246,7 +249,7 @@ print(y_train_true[i])
 pl.figure(figsize=(15, 15))
 pl.title('input')
 nice_imshow(pl.gca(), np.squeeze(X), vmin=0, vmax=1, cmap=cm.binary)
-pl.savefig(MODEL_NAME +  "_input", bbox_inches='tight', pad_inches=1)
+pl.savefig(op_dir +  "input", bbox_inches='tight', pad_inches=1)
 #pl.show()
 
 # Visualize convolution result (after activation)
@@ -340,7 +343,7 @@ plt.title('model accuracy')
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
 plt.legend(['train', 'val'], loc='upper left')
-plt.savefig(MODEL_NAME +  "_accuracy_history", bbox_inches='tight', pad_inches=1)
+plt.savefig(op_dir +  "accuracy_history", bbox_inches='tight', pad_inches=1)
 #plt.show()
 
 
@@ -405,13 +408,13 @@ np.set_printoptions(precision=2)
 plt.figure()
 plot_confusion_matrix(cnf_matrix, classes=class_names,
                       title='Confusion matrix, without normalization',
-                      fname=MODEL_NAME + "_" + 'Confusion_matrix_without_normalization')
+                      fname=op_dir + 'Confusion_matrix_without_normalization')
 
 # Plot normalized confusion matrix
 plt.figure()
 plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True,
                       title='Normalized confusion matrix',
-                      fname=MODEL_NAME + "_" + 'Normalized_confusion_matrix')
+                      fname=op_dir + 'Normalized_confusion_matrix')
 
 #plt.show()
 
@@ -442,7 +445,7 @@ print(X)
 print(y_train_true[i])
 pl.figure(figsize=(15, 15))
 nice_imshow(pl.gca(), np.squeeze(X), vmin=0, vmax=1, cmap=cm.binary)
-pl.savefig(MODEL_NAME +  "_input_" + str(int(y_train_true[i])), bbox_inches='tight', pad_inches=1)
+pl.savefig(op_dir +  "input_" + str(int(y_train_true[i])), bbox_inches='tight', pad_inches=1)
 #pl.show()
 
 # Visualize convolution result (after activation)
@@ -495,7 +498,7 @@ for j in range(len(y_val_true)):
 #         pl.figure(figsize=(10, 10))
 #         pl.title('input ' + str(j))
 #         nice_imshow(pl.gca(), np.squeeze(x_val[j]), vmin=0, vmax=1, cmap=cm.binary)
-#         pl.savefig(MODEL_NAME +  "_input", bbox_inches='tight', pad_inches=1)
+#         pl.savefig(op_dir +  "input", bbox_inches='tight', pad_inches=1)
 #         pl.show()
 
 print(print_saperator)
@@ -511,7 +514,7 @@ cnf_matrix_val = confusion_matrix(y_val_true, y_val_prediction)
 plt.figure()
 plot_confusion_matrix(cnf_matrix_val, classes=class_names, normalize=True,
                       title='Normalized confusion matrix for validation set',
-                      fname=MODEL_NAME + "_val_" + 'Normalized_confusion_matrix')
+                      fname=op_dir + "val_" + 'Normalized_confusion_matrix')
 
 
 print(print_saperator)
@@ -534,7 +537,7 @@ print(x_test.shape, y_test.shape)
 plt.figure()
 plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True,
                     title='Normalized confusion matrix for test set',
-                    fname=MODEL_NAME + "_test_" + 'Normalized_confusion_matrix')
+                    fname=op_dir + "test_" + 'Normalized_confusion_matrix')
 
 
 
