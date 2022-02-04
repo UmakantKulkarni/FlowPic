@@ -33,9 +33,9 @@ print(K.backend(), K.image_data_format())
 
 batch_size = 128
 samples_per_epoch = 10
-num_classes = 5
 epochs = 40
 class_names = ["voip", "video", "file_transfer", "chat", "browsing"]
+num_classes = len(class_names)
 traffic_file_type = 'reg'
 print_saperator = "###################################################################################################################"
 
@@ -45,7 +45,9 @@ input_shape = (1, height, width)
 MODEL_NAME = "traffic_categorization_{}".format(traffic_file_type)
 PATH_PREFIX = "/mydata/flow_pic/FlowPic/output/"
 op_dir = "/mydata/flow_pic/FlowPic/{}_output/".format(MODEL_NAME)
+log_dir = "/mydata/flow_pic/FlowPic/{}_output/logs/".format(MODEL_NAME)
 os.makedirs(op_dir, exist_ok=True)
+os.makedirs(log_dir, exist_ok=True)
 
 
 # ### Import Train and Validation Data
@@ -302,10 +304,10 @@ if 1:
 
 # ### Fit model on training data
 
-tensorboard = TensorBoard(log_dir='./Graph', histogram_freq=1, write_grads=True, write_graph=True,
+tensorboard = TensorBoard(log_dir=log_dir, histogram_freq=1, write_grads=True, write_graph=True,
                           write_images=True, batch_size=batch_size)
-checkpointer_loss = ModelCheckpoint(filepath= MODEL_NAME + '_loss.hdf5', verbose=1, save_best_only=True, save_weights_only=True)
-checkpointer_acc = ModelCheckpoint(monitor='val_acc', filepath= MODEL_NAME + '_acc.hdf5', verbose=1, save_best_only=True, save_weights_only=True)
+checkpointer_loss = ModelCheckpoint(filepath= op_dir + 'loss.hdf5', verbose=1, save_best_only=True, save_weights_only=True)
+checkpointer_acc = ModelCheckpoint(monitor='val_acc', filepath= op_dir + 'acc.hdf5', verbose=1, save_best_only=True, save_weights_only=True)
 tensorboard.set_model(model)
 
 def generator(features, labels, batch_size):
@@ -333,7 +335,7 @@ history = model.fit_generator(generator(x_train, y_train, batch_size),
 import matplotlib.pyplot as plt
 import pickle
 
-with open(MODEL_NAME +  "_accuracy.pkl", 'wb') as output:
+with open(op_dir +  "accuracy.pkl", 'wb') as output:
     pickle.dump(history.history, output, pickle.HIGHEST_PROTOCOL)
 
 # list all data in history
