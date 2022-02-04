@@ -31,7 +31,7 @@ print(K.backend(), K.image_data_format())
 
 # ### Define Parameters
 
-batch_size = 128 #128
+batch_size = 128
 samples_per_epoch = 10
 num_classes = 5
 epochs = 40
@@ -340,7 +340,7 @@ plt.title('model accuracy')
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
 plt.legend(['train', 'val'], loc='upper left')
-plt.savefig(MODEL_NAME +  " accuracy history", bbox_inches='tight', pad_inches=1)
+plt.savefig(MODEL_NAME +  "_accuracy_history", bbox_inches='tight', pad_inches=1)
 #plt.show()
 
 
@@ -499,48 +499,12 @@ for j in range(len(y_val_true)):
 #         pl.show()
 
 
-# ### Import test data
-
-x_test_vpn = np.load(PATH_PREFIX + "vpn_x_test.npy")
-y_test_vpn_true = np.load(PATH_PREFIX + "vpn_y_test.npy")
-x_test_tor = np.load(PATH_PREFIX + "tor_x_test.npy")
-y_test_tor_true = np.load(PATH_PREFIX + "tor_y_test.npy")
-
-y_test_vpn = utils.to_categorical(y_test_vpn_true, num_classes)
-y_test_tor = utils.to_categorical(y_test_tor_true, num_classes)
-
-print(x_test_vpn.shape, y_test_vpn.shape)
-print(x_test_tor.shape, y_test_tor.shape)
-
-
-# ### Evaluate model on test data
-
-
-# model.load_weights(MODEL_NAME + '.hdf5')
-
 score_val = model.evaluate(x_val, y_val, verbose=1)
 print('Validation loss:', score_val[0])
 print('Validaion accuracy:', score_val[1])
 print('Validaion top_2_categorical_accuracy:', score_val[2])
 
-score_vpn = model.evaluate(x_test_vpn, y_test_vpn, verbose=1)
-print('VPN_Test loss:', score_vpn[0])
-print('VPN_Test accuracy:', score_vpn[1])
-print('VPN_Test top_2_categorical_accuracy:', score_vpn[2])
-
-score_tor = model.evaluate(x_test_tor, y_test_tor, verbose=1)
-print('TOR_Test loss:', score_tor[0])
-print('TOR_Test accuracy:', score_tor[1])
-print('TOR_Test top_2_categorical_accuracy:', score_tor[2])
-
-
-y_test_vpn_prediction = model.predict_classes(x_test_vpn, verbose=1)
-y_test_tor_prediction = model.predict_classes(x_test_tor, verbose=1)
-
-
 cnf_matrix_val = confusion_matrix(y_val_true, y_val_prediction)
-cnf_matrix_vpn = confusion_matrix(y_test_vpn_true, y_test_vpn_prediction)
-cnf_matrix_tor = confusion_matrix(y_test_tor_true, y_test_tor_prediction)
 
 # Plot normalized confusion matrix
 plt.figure()
@@ -548,20 +512,55 @@ plot_confusion_matrix(cnf_matrix_val, classes=class_names, normalize=True,
                       title='Normalized confusion matrix for regular validation set',
                       fname=MODEL_NAME + "_val_" + 'Normalized_confusion_matrix')
 
-# Plot normalized confusion matrix
-plt.figure()
-plot_confusion_matrix(cnf_matrix_vpn, classes=class_names, normalize=True,
-                      title='Normalized confusion matrix for vpn test set',
-                      fname=MODEL_NAME + "_test_vpn_" + 'Normalized_confusion_matrix')
+if 0:
+    # ### Import test data
 
-# Plot normalized confusion matrix
-plt.figure()
-plot_confusion_matrix(cnf_matrix_tor, classes=class_names, normalize=True,
-                      title='Normalized confusion matrix for tor test set',
-                      fname=MODEL_NAME + "_test_tor_" + 'Normalized_confusion_matrix')
+    x_test_vpn = np.load(PATH_PREFIX + "vpn_x_test.npy")
+    y_test_vpn_true = np.load(PATH_PREFIX + "vpn_y_test.npy")
+    x_test_tor = np.load(PATH_PREFIX + "tor_x_test.npy")
+    y_test_tor_true = np.load(PATH_PREFIX + "tor_y_test.npy")
 
-#plt.show()
+    y_test_vpn = utils.to_categorical(y_test_vpn_true, num_classes)
+    y_test_tor = utils.to_categorical(y_test_tor_true, num_classes)
 
+    print(x_test_vpn.shape, y_test_vpn.shape)
+    print(x_test_tor.shape, y_test_tor.shape)
+
+
+    # ### Evaluate model on test data
+
+
+    # model.load_weights(MODEL_NAME + '.hdf5')
+
+    score_vpn = model.evaluate(x_test_vpn, y_test_vpn, verbose=1)
+    print('VPN_Test loss:', score_vpn[0])
+    print('VPN_Test accuracy:', score_vpn[1])
+    print('VPN_Test top_2_categorical_accuracy:', score_vpn[2])
+
+    score_tor = model.evaluate(x_test_tor, y_test_tor, verbose=1)
+    print('TOR_Test loss:', score_tor[0])
+    print('TOR_Test accuracy:', score_tor[1])
+    print('TOR_Test top_2_categorical_accuracy:', score_tor[2])
+
+    y_test_vpn_prediction = model.predict_classes(x_test_vpn, verbose=1)
+    y_test_tor_prediction = model.predict_classes(x_test_tor, verbose=1)
+
+    cnf_matrix_vpn = confusion_matrix(y_test_vpn_true, y_test_vpn_prediction)
+    cnf_matrix_tor = confusion_matrix(y_test_tor_true, y_test_tor_prediction)
+
+    # Plot normalized confusion matrix
+    plt.figure()
+    plot_confusion_matrix(cnf_matrix_vpn, classes=class_names, normalize=True,
+                        title='Normalized confusion matrix for vpn test set',
+                        fname=MODEL_NAME + "_test_vpn_" + 'Normalized_confusion_matrix')
+
+    # Plot normalized confusion matrix
+    plt.figure()
+    plot_confusion_matrix(cnf_matrix_tor, classes=class_names, normalize=True,
+                        title='Normalized confusion matrix for tor test set',
+                        fname=MODEL_NAME + "_test_tor_" + 'Normalized_confusion_matrix')
+
+    #plt.show()
 
 # ### Save Model and weights
 
