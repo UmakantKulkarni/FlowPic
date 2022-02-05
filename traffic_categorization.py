@@ -62,7 +62,7 @@ print(x_val.shape, y_val_true.shape)
 
 
 # ### Shuffle Data
-
+np.random.seed(0)
 def shuffle_data(x, y):
     s = np.arange(x.shape[0])
     np.random.shuffle(s)
@@ -72,6 +72,7 @@ def shuffle_data(x, y):
     return x, y
 
 x_train, y_train_true = shuffle_data(x_train, y_train_true)
+x_val, y_val_true = shuffle_data(x_val, y_val_true)
 
 print(y_train_true[0:10])
 
@@ -532,6 +533,7 @@ print(print_saperator)
 
 x_test = np.load(PATH_PREFIX + "{}_x_test.npy".format(traffic_file_type))
 y_test_true = np.load(PATH_PREFIX + "{}_y_test.npy".format(traffic_file_type))
+x_test, y_test_true = shuffle_data(x_test, y_test_true)
 y_test = utils.to_categorical(y_test_true, num_classes)
 
 score = model.evaluate(x_test, y_test, verbose=1)
@@ -555,7 +557,7 @@ plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True,
 # ### Save Model and weights
 
 model_json = model.to_json()
-with open(MODEL_NAME + '.json', "w") as json_file:
+with open(op_dir + MODEL_NAME + '.json', "w") as json_file:
     json_file.write(model_json)
-model.save_weights(MODEL_NAME + '.h5')
+model.save_weights(op_dir + MODEL_NAME + '.h5')
 print("Save Model")
