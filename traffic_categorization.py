@@ -36,7 +36,8 @@ samples_per_epoch = 10
 epochs = 40
 class_names = ["voip", "video", "file_transfer", "chat", "browsing"]
 num_classes = len(class_names)
-traffic_file_type = 'reg'
+traffic_file_types = ['reg', 'tor', 'vpn']
+traffic_file_type = 'merged'
 print_saperator = "###################################################################################################################"
 
 # input hist dimensions
@@ -48,14 +49,50 @@ op_dir = "/mydata/flow_pic/FlowPic/{}_output/".format(MODEL_NAME)
 log_dir = "/mydata/flow_pic/FlowPic/{}_output/logs/".format(MODEL_NAME)
 os.makedirs(op_dir, exist_ok=True)
 os.makedirs(log_dir, exist_ok=True)
-
+merged_dataset = 1
 
 # ### Import Train and Validation Data
 
-x_train = np.load(PATH_PREFIX + "{}_x_train.npy".format(traffic_file_type))
-y_train_true = np.load(PATH_PREFIX + "{}_y_train.npy".format(traffic_file_type))
-x_val = np.load(PATH_PREFIX + "{}_x_val.npy".format(traffic_file_type))
-y_val_true = np.load(PATH_PREFIX + "{}_y_val.npy".format(traffic_file_type))
+if merged_dataset:
+
+    reg_data = np.load(PATH_PREFIX + "{}_x_train.npy".format(traffic_file_types[0]))
+    tor_data = np.load(PATH_PREFIX + "{}_x_train.npy".format(traffic_file_types[1]))
+    vpn_data = np.load(PATH_PREFIX + "{}_x_train.npy".format(traffic_file_types[2]))
+    x_train = np.concatenate((reg_data, tor_data, vpn_data), axis=0)
+    del reg_data
+    del tor_data
+    del vpn_data
+
+    reg_data = np.load(PATH_PREFIX + "{}_y_train.npy".format(traffic_file_types[0]))
+    tor_data = np.load(PATH_PREFIX + "{}_y_train.npy".format(traffic_file_types[1]))
+    vpn_data = np.load(PATH_PREFIX + "{}_y_train.npy".format(traffic_file_types[2]))
+    y_train_true = np.concatenate((reg_data, tor_data, vpn_data), axis=0)
+    del reg_data
+    del tor_data
+    del vpn_data
+
+    reg_data = np.load(PATH_PREFIX + "{}_x_val.npy".format(traffic_file_types[0]))
+    tor_data = np.load(PATH_PREFIX + "{}_x_val.npy".format(traffic_file_types[1]))
+    vpn_data = np.load(PATH_PREFIX + "{}_x_val.npy".format(traffic_file_types[2]))
+    x_val = np.concatenate((reg_data, tor_data, vpn_data), axis=0)
+    del reg_data
+    del tor_data
+    del vpn_data
+
+    reg_data = np.load(PATH_PREFIX + "{}_y_val.npy".format(traffic_file_types[0]))
+    tor_data = np.load(PATH_PREFIX + "{}_y_val.npy".format(traffic_file_types[1]))
+    vpn_data = np.load(PATH_PREFIX + "{}_y_val.npy".format(traffic_file_types[2]))
+    y_val_true = np.concatenate((reg_data, tor_data, vpn_data), axis=0)
+    del reg_data
+    del tor_data
+    del vpn_data
+
+else:
+
+    x_train = np.load(PATH_PREFIX + "{}_x_train.npy".format(traffic_file_type))
+    y_train_true = np.load(PATH_PREFIX + "{}_y_train.npy".format(traffic_file_type))
+    x_val = np.load(PATH_PREFIX + "{}_x_val.npy".format(traffic_file_type))
+    y_val_true = np.load(PATH_PREFIX + "{}_y_val.npy".format(traffic_file_type))
 
 print(x_train.shape, y_train_true.shape)
 print(x_val.shape, y_val_true.shape)
@@ -531,8 +568,29 @@ plot_confusion_matrix(cnf_matrix_val, classes=class_names, normalize=True,
 print(print_saperator)
 # Evaluate model on test data
 
-x_test = np.load(PATH_PREFIX + "{}_x_test.npy".format(traffic_file_type))
-y_test_true = np.load(PATH_PREFIX + "{}_y_test.npy".format(traffic_file_type))
+if merged_dataset:
+    
+    reg_data = np.load(PATH_PREFIX + "{}_x_test.npy".format(traffic_file_types[0]))
+    tor_data = np.load(PATH_PREFIX + "{}_x_test.npy".format(traffic_file_types[1]))
+    vpn_data = np.load(PATH_PREFIX + "{}_x_test.npy".format(traffic_file_types[2]))
+    x_test = np.concatenate((reg_data, tor_data, vpn_data), axis=0)
+    del reg_data
+    del tor_data
+    del vpn_data
+
+    reg_data = np.load(PATH_PREFIX + "{}_y_test.npy".format(traffic_file_types[0]))
+    tor_data = np.load(PATH_PREFIX + "{}_y_test.npy".format(traffic_file_types[1]))
+    vpn_data = np.load(PATH_PREFIX + "{}_y_test.npy".format(traffic_file_types[2]))
+    y_test_true = np.concatenate((reg_data, tor_data, vpn_data), axis=0)
+    del reg_data
+    del tor_data
+    del vpn_data
+
+else:
+
+    x_test = np.load(PATH_PREFIX + "{}_x_test.npy".format(traffic_file_type))
+    y_test_true = np.load(PATH_PREFIX + "{}_y_test.npy".format(traffic_file_type))
+
 x_test, y_test_true = shuffle_data(x_test, y_test_true)
 y_test = utils.to_categorical(y_test_true, num_classes)
 
