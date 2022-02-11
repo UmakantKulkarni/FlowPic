@@ -4,6 +4,12 @@ import os
 import numpy as np
 from sklearn.model_selection import train_test_split
 
+input_file_dir = 'input'
+output_file_dir = 'output'
+balanced_dataset = 1
+if balanced_dataset:
+    input_file_dir = 'input_bal'
+    output_file_dir = 'output_bal'
 traffic_file_type = 'reg'
 
 
@@ -30,7 +36,7 @@ def save_to_file(data_type, d1, d2, d3, d4, d5):
     else:
         np_data = np.concatenate((d1, d2, d3, d4, d5), axis=0)
     
-    np.save(os.path.join('output', '{}_{}'.format(traffic_file_type, data_type)), np_data)
+    np.save(os.path.join(output_file_dir, '{}_{}'.format(traffic_file_type, data_type)), np_data)
     del np_data
     if type1:
         del d1
@@ -43,23 +49,23 @@ def save_to_file(data_type, d1, d2, d3, d4, d5):
 def main():
 
     if type1:
-        a1 = np.load('input/browsing_{}.npz'.format(traffic_file_type))
+        a1 = np.load('{}/browsing_{}.npz'.format(input_file_dir, traffic_file_type))
         x1_train, x1_val, x1_test, y1_train, y1_val, y1_test = get_train_test_val(a1['X'], a1['Y'])
         
     if type2:
-        a2 = np.load('input/chat_{}.npz'.format(traffic_file_type))
+        a2 = np.load('{}/chat_{}.npz'.format(input_file_dir, traffic_file_type))
         x2_train, x2_val, x2_test, y2_train, y2_val, y2_test = get_train_test_val(a2['X'], a2['Y'])
 
     if type3:
-        a3 = np.load('input/file_transfer_{}.npz'.format(traffic_file_type))
+        a3 = np.load('{}/file_transfer_{}.npz'.format(input_file_dir, traffic_file_type))
         x3_train, x3_val, x3_test, y3_train, y3_val, y3_test = get_train_test_val(a3['X'], a3['Y'])
 
     if type4:
-        a4 = np.load('input/video_{}.npz'.format(traffic_file_type))
+        a4 = np.load('{}/video_{}.npz'.format(input_file_dir, traffic_file_type))
         x4_train, x4_val, x4_test, y4_train, y4_val, y4_test = get_train_test_val(a4['X'], a4['Y'])
 
     if type5:
-        a5 = np.load('input/voip_{}.npz'.format(traffic_file_type))
+        a5 = np.load('{}/voip_{}.npz'.format(input_file_dir, traffic_file_type))
         x5_train, x5_val, x5_test, y5_train, y5_val, y5_test = get_train_test_val(a5['X'], a5['Y'])
 
     print("Done splitting")

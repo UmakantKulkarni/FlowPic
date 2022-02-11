@@ -5,12 +5,18 @@ Read traffic_csv
 
 import os
 import csv
+import random
+import numpy as np
 from sessions_plotter import *
 import glob
 
 CLASSES_DIR = "../classes/**/**/"
 CLASS_LABELS = {"voip": 0, "video": 1, "file_transfer": 2, "chat": 3, "browsing": 4}
+size_dict = {"reg": 635, "vpn": 242, "tor": 422}
 TPS = 60  # TimePerSession in secs
+balanced_dataset = 1
+file_save_dir = 'input'
+np.random.seed(0)
 
 
 def traffic_csv_converter(file_path):
@@ -84,13 +90,18 @@ def traffic_class_converter(dir_path):
 
 def export_dataset(class_dir):
     print("Working on " + class_dir)
-    dataset = traffic_class_converter(class_dir)
-    print("Dataset shape is ", dataset.shape)
     traffic_ctg = class_dir.split("/")[2]
     traffic_enc = class_dir.split("/")[3]
+    dataset = traffic_class_converter(class_dir)
+    if balanced_dataset:
+        rand_samples = random.sample(range(0, dataset.shape[0]), size_dict[traffic_enc])
+        sze = np.array(rand_samples)
+        dataset = dataset[sze]
+        file_save_dir = 'input_bal'
+    print("Dataset shape is ", dataset.shape)
     file_name = traffic_ctg + "_" + traffic_enc
     labels = [CLASS_LABELS[traffic_ctg]]*dataset.shape[0]
-    np.savez(os.path.join('input', file_name), X=dataset, Y=labels)
+    np.savez(os.path.join(file_save_dir, file_name), X=dataset, Y=labels)
     print("Exported " + class_dir)
 
 

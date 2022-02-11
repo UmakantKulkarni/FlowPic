@@ -18,6 +18,25 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.metrics import top_k_categorical_accuracy
 
 
+class_names = ["voip", "video", "file_transfer", "chat", "browsing"]
+num_classes = len(class_names)
+traffic_file_types = ['reg', 'tor', 'vpn']
+traffic_file_type = 'merged'
+balanced_dataset = 1
+input_file_dir = 'output'
+MODEL_NAME = "traffic_categorization_{}".format(traffic_file_type)
+merged_dataset = 1
+if balanced_dataset:
+    input_file_dir = 'output_bal'
+    MODEL_NAME = "traffic_categorization_{}_bal".format(traffic_file_type)
+
+PATH_PREFIX = "/mydata/flow_pic/FlowPic/{}/".format(input_file_dir)
+op_dir = "/mydata/flow_pic/FlowPic/{}_{}/".format(MODEL_NAME, input_file_dir)
+log_dir = "/mydata/flow_pic/FlowPic/{}_{}/logs/".format(MODEL_NAME, input_file_dir)
+os.makedirs(op_dir, exist_ok=True)
+os.makedirs(log_dir, exist_ok=True)
+
+
 # def set_keras_backend(backend):
 
 #     if K.backend() != backend:
@@ -30,26 +49,15 @@ K.set_image_data_format('channels_first')
 print(K.backend(), K.image_data_format())
 
 # ### Define Parameters
-
 batch_size = 128
 samples_per_epoch = 10
 epochs = 40
-class_names = ["voip", "video", "file_transfer", "chat", "browsing"]
-num_classes = len(class_names)
-traffic_file_types = ['reg', 'tor', 'vpn']
-traffic_file_type = 'merged'
 print_saperator = "###################################################################################################################"
 
 # input hist dimensions
 height, width = 1500, 1500
 input_shape = (1, height, width)
-MODEL_NAME = "traffic_categorization_{}".format(traffic_file_type)
-PATH_PREFIX = "/mydata/flow_pic/FlowPic/output/"
-op_dir = "/mydata/flow_pic/FlowPic/{}_output/".format(MODEL_NAME)
-log_dir = "/mydata/flow_pic/FlowPic/{}_output/logs/".format(MODEL_NAME)
-os.makedirs(op_dir, exist_ok=True)
-os.makedirs(log_dir, exist_ok=True)
-merged_dataset = 1
+
 
 # ### Import Train and Validation Data
 
