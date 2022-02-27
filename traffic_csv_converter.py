@@ -9,6 +9,7 @@ import random
 import numpy as np
 from sessions_plotter import *
 import glob
+from argparse import ArgumentParser
 
 CLASSES_DIR = "../PcapsVoip/**/"
 CLASS_LABELS = {"webex": 0, "zoom": 1, "slack": 2, "skype": 3, "teams": 4}
@@ -19,8 +20,10 @@ file_save_dir = 'input'
 np.random.seed(0)
 
 
-def traffic_csv_converter(file_path):
+def traffic_csv_converter(file_path, traffic_type):
     print("Running on " + file_path)
+    op_dir = '{}/{}/'.format(image_dir, traffic_type)
+    os.makedirs(op_dir, exist_ok=True)
     dataset = []
     # labels = []
     counter = 0
@@ -41,7 +44,7 @@ def traffic_csv_converter(file_path):
             session_tuple_key = tuple(row[:8])
             length = int(row[7])
             ts = np.array(row[8:8+length], dtype=float)
-            sizes = np.array(row[9+length:], dtype=int)
+            sizes = np.array(row[9+length:-1], dtype=int)
 
             # if (sizes > MTU).any():
             #     a = [(sizes[i], i) for i in range(len(sizes)) if (np.array(sizes) > MTU)[i]]
@@ -70,7 +73,7 @@ def traffic_csv_converter(file_path):
                         # else:
                         #     continue
 
-                        h = session_2d_histogram(ts_mask, sizes_mask)
+                        h = session_2d_histogram(ts_mask, sizes_mask, traffic_type, plot=False)
                         # session_spectogram(ts_mask, sizes_mask, session_tuple_key[0])
                         dataset.append([h])
                         counter += 1
@@ -89,12 +92,12 @@ def traffic_class_converter(dir_path):
 
 
 def export_dataset(csv_file):
+    traffic_type = csv_file.split('.')[0]
     print("Working on " + csv_file)
-    dataset = traffic_csv_converter(csv_file)
+    dataset = traffic_csv_converter(csv_file, traffic_type)
     print("Dataset shape is ", dataset.shape)
-    file_name = csv_file.split('.')[0]
-    labels = [CLASS_LABELS[file_name]]*dataset.shape[0]
-    np.savez(os.path.join(file_save_dir, file_name), X=dataset, Y=labels)
+    labels = [CLASS_LABELS[traffic_type]]*dataset.shape[0]
+    np.savez(os.path.join(file_save_dir, traffic_type), X=dataset, Y=labels)
     print("Exported " + csv_file)
 
 
@@ -118,5 +121,8 @@ def random_sampling_dataset(dataset, size=2000, dir_path=""):
 
 if __name__ == '__main__':
 
-    csv_file = 'webex.csv'
-    export_dataset(csv_file)
+    parser = ArgumentParser()
+    parser.add_argument("-f", "--file", help="Input CSV file")
+    args = parser.parse_args()
+    args_dict = vars(args)
+    export_dataset(args_dict['file'])
