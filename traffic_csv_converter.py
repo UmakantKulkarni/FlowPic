@@ -12,7 +12,7 @@ import glob
 from argparse import ArgumentParser
 
 CLASSES_DIR = "../PcapsVoip/**/"
-CLASS_LABELS = {"webex": 0, "zoom": 1, "slack": 2, "skype": 3, "teams": 4}
+CLASS_LABELS = {"webex": 0, "zoom": 1, "slack": 2, "skype": 3, "teams": 4, "zoomvpn": 5}
 size_dict = {"reg": 635, "vpn": 242, "tor": 422}
 TPS = 60  # TimePerSession in secs
 balanced_dataset = 0
