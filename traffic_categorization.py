@@ -21,7 +21,8 @@ from tensorflow.keras.callbacks import TensorBoard,ModelCheckpoint
 from tensorflow.keras import backend as K
 from tensorflow.keras.metrics import top_k_categorical_accuracy
 
-
+cnn_model = "lenet5"
+#cnn_model = "unet"
 class_names = ["voip", "video", "file_transfer", "chat", "browsing"]
 num_classes = len(class_names)
 traffic_file_types = ['reg', 'tor', 'vpn']
@@ -172,7 +173,7 @@ def top_2_categorical_accuracy(y_true, y_pred):
     return top_k_categorical_accuracy(y_true, y_pred, k=2)
 
 
-def lenet5_model(input_shape):
+if cnn_model == "lenet5":
     #model = Sequential(tf.keras.layers.InputLayer(input_shape=input_shape))
     #model.add(Permute((2, 3, 1)))
     #model.add(BatchNormalization(axis=-1))
@@ -203,8 +204,8 @@ def lenet5_model(input_shape):
     model.summary()
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy', top_2_categorical_accuracy, f1_score, precision, recall])
 
-def unet_model(pretrained_weights = None, input_size = (height, width, 1)):
-    inputs = Input(input_size)
+elif cnn_model == "unet":
+    inputs = Input((height, width, 1))
     conv1 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(inputs)
     conv1 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv1)
     pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
@@ -249,12 +250,8 @@ def unet_model(pretrained_weights = None, input_size = (height, width, 1)):
 
     model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = ['accuracy'])
 
-    if(pretrained_weights):
-        	model.load_weights(pretrained_weights)
-
-
-model = lenet5_model(input_shape)
-#model = unet_model(input_size = (height, width, 1))
+    #if(pretrained_weights):
+    #    	model.load_weights(pretrained_weights)
 
 
 # ### Define nice_imshow and make_moasic functions
