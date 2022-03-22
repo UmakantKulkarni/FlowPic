@@ -60,7 +60,7 @@ epochs = 40
 print_saperator = "###################################################################################################################"
 
 # input hist dimensions
-height, width = 1500, 1500
+height, width = 1504, 1504
 input_shape = (1, height, width)
 
 
@@ -205,7 +205,7 @@ if cnn_model == "lenet5":
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy', top_2_categorical_accuracy, f1_score, precision, recall])
 
 elif cnn_model == "unet":
-    inputs = Input((height, width, 1))
+    inputs = Input(input_shape)
     conv1 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(inputs)
     conv1 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv1)
     pool1 = MaxPooling2D(pool_size=(2, 2))(conv1)
@@ -246,7 +246,7 @@ elif cnn_model == "unet":
     conv9 = Conv2D(2, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv9)
     conv10 = Conv2D(1, 1, activation = 'sigmoid')(conv9)
 
-    model = Model(input = inputs, output = conv10)
+    model = Model(inputs = inputs, outputs = conv10)
 
     model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = ['accuracy'])
 
@@ -371,7 +371,7 @@ def get_layer_output(layer, input_img, layer_name):
     return C
 
 
-if 1:
+if cnn_model == "lenet5":
     C1 = get_layer_output(convout1, x_train[i:i+1], layer_name="convout1_before")
     mosaic_imshow(C1, 2, 5, cmap=cm.binary, border=2, layer_name="convout1_before")
     plotNNFilter(C1, 2, 5, cmap=cm.binary, layer_name="convout1_before")
@@ -569,35 +569,36 @@ def get_layer_output(layer, input_img, layer_name):
     print(layer_name + " output shape : ", C.shape)
     return C
 
+if cnn_model == "lenet5":
 
-C1 = get_layer_output(convout1, x_train[i:i+1], layer_name="convout1_" + str(int(y_train_true[i])))
-mosaic_imshow(C1, 2, 5, cmap=cm.binary, border=2, layer_name="convout1_" + str(int(y_train_true[i])))
-plotNNFilter(C1, 2, 5, cmap=cm.binary, layer_name="convout1_" + str(int(y_train_true[i])))
-plotNNFilter2(C1, 2, 5, cmap=cm.binary, layer_name="convout1_" + str(int(y_train_true[i])))
+    C1 = get_layer_output(convout1, x_train[i:i+1], layer_name="convout1_" + str(int(y_train_true[i])))
+    mosaic_imshow(C1, 2, 5, cmap=cm.binary, border=2, layer_name="convout1_" + str(int(y_train_true[i])))
+    plotNNFilter(C1, 2, 5, cmap=cm.binary, layer_name="convout1_" + str(int(y_train_true[i])))
+    plotNNFilter2(C1, 2, 5, cmap=cm.binary, layer_name="convout1_" + str(int(y_train_true[i])))
 
-C2 = get_layer_output(convout2, x_train[i:i+1], layer_name="convout2_" + str(int(y_train_true[i])))
-mosaic_imshow(C2, 4, 5, cmap=cm.binary, border=2, layer_name="convout2_" + str(int(y_train_true[i])))
-plotNNFilter(C2, 4, 5, cmap=cm.binary, layer_name="convout2_" + str(int(y_train_true[i])))
-plotNNFilter2(C2, 4, 5, cmap=cm.binary, layer_name="convout2_" + str(int(y_train_true[i])))
+    C2 = get_layer_output(convout2, x_train[i:i+1], layer_name="convout2_" + str(int(y_train_true[i])))
+    mosaic_imshow(C2, 4, 5, cmap=cm.binary, border=2, layer_name="convout2_" + str(int(y_train_true[i])))
+    plotNNFilter(C2, 4, 5, cmap=cm.binary, layer_name="convout2_" + str(int(y_train_true[i])))
+    plotNNFilter2(C2, 4, 5, cmap=cm.binary, layer_name="convout2_" + str(int(y_train_true[i])))
 
-# Visualize weights
-W1 = model.layers[0].get_weights()[0]
-W1 = np.squeeze(W1)
-# W1 = np.asarray(W1)
-print("W1 shape : ", W1.shape)
+    # Visualize weights
+    W1 = model.layers[0].get_weights()[0]
+    W1 = np.squeeze(W1)
+    # W1 = np.asarray(W1)
+    print("W1 shape : ", W1.shape)
 
-mosaic_imshow(W1, 2, 5, cmap=cm.binary, border=1, layer_name="conv1_weights")
-plotNNFilter(W1, 2, 5, cmap=cm.binary, layer_name="conv1_weights")
-plotNNFilter2(W1, 2, 5, cmap=cm.binary, layer_name="conv1_weights")
+    mosaic_imshow(W1, 2, 5, cmap=cm.binary, border=1, layer_name="conv1_weights")
+    plotNNFilter(W1, 2, 5, cmap=cm.binary, layer_name="conv1_weights")
+    plotNNFilter2(W1, 2, 5, cmap=cm.binary, layer_name="conv1_weights")
 
-# Visualize weights
-W2 = model.layers[3].get_weights()[0][:,:,0,:]
-W2 = np.asarray(W2)
-print("W2 shape : ", W2.shape)
+    # Visualize weights
+    W2 = model.layers[3].get_weights()[0][:,:,0,:]
+    W2 = np.asarray(W2)
+    print("W2 shape : ", W2.shape)
 
-mosaic_imshow(W2, 4, 5, cmap=cm.binary, border=1, layer_name="conv2_weights")
-plotNNFilter(W2, 4, 5, cmap=cm.binary, layer_name="conv2_weights")
-plotNNFilter2(W2, 4, 5, cmap=cm.binary, layer_name="conv2_weights")
+    mosaic_imshow(W2, 4, 5, cmap=cm.binary, border=1, layer_name="conv2_weights")
+    plotNNFilter(W2, 4, 5, cmap=cm.binary, layer_name="conv2_weights")
+    plotNNFilter2(W2, 4, 5, cmap=cm.binary, layer_name="conv2_weights")
 
 
 y_val_true, y_val_prediction
