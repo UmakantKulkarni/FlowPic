@@ -247,7 +247,7 @@ elif cnn_model == "unet":
     conv10 = Conv2D(1, 1, activation = 'sigmoid')(conv9)
 
     model = Model(inputs = inputs, outputs = conv10)
-
+    model.summary()
     model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = ['accuracy'])
 
     #if(pretrained_weights):
