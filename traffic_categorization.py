@@ -457,7 +457,9 @@ plt.close()
 
 # ### Plot Confusion Matrix
 
-y_val_prediction = model.predict_classes(x_val, verbose=1)
+#y_val_prediction = model.predict_classes(x_val, verbose=1)
+predict_x=model.predict(x_val) 
+y_val_prediction=np.argmax(predict_x,axis=1)
 
 
 print(y_val_prediction[:10])
@@ -663,7 +665,9 @@ print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 print('Test top_2_categorical_accuracy:', score[2])
 
-y_test_prediction = model.predict_classes(x_test, verbose=1)
+#y_test_prediction = model.predict_classes(x_test, verbose=1)
+predict_x=model.predict(x_test)
+y_test_prediction=np.argmax(predict_x,axis=1)
 cnf_matrix = confusion_matrix(y_test_true, y_test_prediction)
 
 print(x_test.shape, y_test.shape)
