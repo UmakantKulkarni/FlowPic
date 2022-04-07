@@ -13,6 +13,6 @@ for inp_file in $MY_DIR/cs638pcaps/PcapVoip/*.pcap; do
     echo "Generated output CSV file $op_csv"
     echo " "
     python3  $MY_DIR/FlowPic/traffic_csv_converter.py -f $MY_DIR/FlowPic/csvs/$op_csv
-    echo "Generated floepics for $traffic_type"
+    echo "Generated flowpics for $traffic_type"
     echo " "
 done
