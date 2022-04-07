@@ -73,7 +73,7 @@ def traffic_csv_converter(file_path, traffic_type):
                         # else:
                         #     continue
 
-                        h = session_2d_histogram(ts_mask, sizes_mask, traffic_type, plot=False)
+                        h = session_2d_histogram(ts_mask, sizes_mask, traffic_type, plot=True)
                         # session_spectogram(ts_mask, sizes_mask, session_tuple_key[0])
                         dataset.append([h])
                         counter += 1
