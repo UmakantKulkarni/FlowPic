@@ -36,7 +36,7 @@ def session_histogram(sizes, plot=False):
     return hist.astype(np.uint16)
 
 
-def session_2d_histogram(ts, sizes, traffic_type, plot=False):
+def session_2d_histogram(ts, sizes, traffic_type, plot=True):
     fname = time.time_ns()
     # ts_norm = map(int, ((np.array(ts) - ts[0]) / (ts[-1] - ts[0])) * MTU)
     ts_norm = ((np.array(ts) - ts[0]) / (ts[-1] - ts[0])) * MTU

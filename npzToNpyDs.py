@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 
 input_file_dir = 'input'
 output_file_dir = 'output'
-balanced_dataset = 1
+balanced_dataset = 0
 if balanced_dataset:
     input_file_dir = 'input_bal'
     output_file_dir = 'output_bal'

@@ -23,11 +23,11 @@ from tensorflow.keras.metrics import top_k_categorical_accuracy
 class_names = ["voip", "video", "file_transfer", "chat", "browsing"]
 num_classes = len(class_names)
 traffic_file_types = ['reg', 'tor', 'vpn']
-traffic_file_type = 'merged'
-balanced_dataset = 1
+traffic_file_type = 'reg'
+balanced_dataset = 0
 input_file_dir = 'output'
 MODEL_NAME = "traffic_categorization_{}".format(traffic_file_type)
-merged_dataset = 1
+merged_dataset = 0
 if balanced_dataset:
     input_file_dir = 'output_bal'
     MODEL_NAME = "traffic_categorization_{}_bal".format(traffic_file_type)
@@ -457,8 +457,9 @@ plt.close()
 
 # ### Plot Confusion Matrix
 
-y_val_prediction = model.predict_classes(x_val, verbose=1)
-
+#y_val_prediction = model.predict_classes(x_val, verbose=1)
+predict_x=model.predict(x_val) 
+y_val_prediction=np.argmax(predict_x,axis=1)
 
 print(y_val_prediction[:10])
 
@@ -662,7 +663,9 @@ print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 print('Test top_2_categorical_accuracy:', score[2])
 
-y_test_prediction = model.predict_classes(x_test, verbose=1)
+#y_test_prediction = model.predict_classes(x_test, verbose=1)
+predict_x=model.predict(x_test) 
+y_test_prediction=np.argmax(predict_x,axis=1)
 cnf_matrix = confusion_matrix(y_test_true, y_test_prediction)
 
 print(x_test.shape, y_test.shape)
