@@ -3,7 +3,7 @@
 MY_DIR=/home/ukulkarn
 
 for inp_file in $MY_DIR/FlowPic/csvs/*.csv; do
-    if [[ $inp_file == *"zoom"* ]] | [[ $inp_file == *"teams"* ]] | [[ $inp_file == *"webex"* ]] | [[ $inp_file == *"google"* ]]; then
+    if [[ $inp_file == *"zoom"* ]] || [[ $inp_file == *"teams"* ]] || [[ $inp_file == *"webex"* ]] || [[ $inp_file == *"google"* ]]; then
         echo " "
         echo "Working on $inp_file"
         echo " "

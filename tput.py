@@ -40,7 +40,7 @@ def div0(a, b, fill=np.nan):
 
 def calc_tput(csv_input_file):
     base_filename = os.path.basename(csv_input_file)
-    write_to_file("File-name ", base_filename)
+    write_to_file("tput_data.txt", "File-name {}".format(base_filename))
     with open(csv_input_file, 'r') as csv_file:
         j = 1
         port_nums = []        
