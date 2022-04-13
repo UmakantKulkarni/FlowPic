@@ -82,6 +82,8 @@ def calc_tput(csv_input_file):
                     print("tput_dict is ", tput_dict)
                     write_to_file("tput_data.txt", tput_dict)
             j = j + 1
+    print(" ")
+    print("total_avg_tput is ", total_avg_tput)
     write_to_file("tput_data.txt", "Total avg throughput - {}".format(total_avg_tput))
 
 
