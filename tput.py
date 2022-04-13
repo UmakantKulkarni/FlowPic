@@ -9,7 +9,7 @@ company_ports = {
     "webex": [9000, 5004],
     "teams": [3479, 3480, 3481],
     "zoom": [8801, 8802],
-    "google": [19302, 19303, 19304, 19305, 19306, 19307, 19308, 19309, 3478]
+    "google": [19302, 19303, 19304, 19305, 19306, 19307, 19308, 19309, 3478, 443]
 }
 
 #common_ports = [80, 443, 3478]
@@ -50,8 +50,8 @@ def calc_tput(csv_input_file):
             for key in company_ports:
                 if base_filename[0:4] == key[0:4]:
                     port_nums = company_ports[key]
-            if int(row[2]) in (port_nums + common_ports) or int(
-                    row[4]) in (port_nums + common_ports):
+            if (int(row[2]) in (port_nums + common_ports) or int(
+                    row[4]) in (port_nums + common_ports)) and row[5] == "UDP":
                 length = int(row[7])
                 ts = np.array(row[8:8 + length], dtype=float)
                 tot_time = ts[-1]
