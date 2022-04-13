@@ -3,6 +3,16 @@
 import os
 import csv
 import numpy as np
+from argparse import ArgumentParser
+
+company_ports = {
+    "webex": [9000, 5004],
+    "teams": [3479, 3480, 3481],
+    "zoom": [8801, 8802],
+    "google": [19302, 19303, 19304, 19305, 19306, 19307, 19308, 19309, 3478]
+}
+
+common_ports = [80, 443, 3478]
 
 
 def write_to_file(file_name, file_data):
@@ -28,39 +38,53 @@ def div0(a, b, fill=np.nan):
         return c
 
 
-file_path = "zoom.csv"
-j = 1
-with open(file_path, 'r') as csv_file:
-    reader = csv.reader(csv_file)
-    for j, row in enumerate(reader):
-        if int(row[2]) == 8801 or int(row[2]) == 8802 or int(
-                row[4]) == 8801 or int(row[4]) == 8802:
-            length = int(row[7])
-            ts = np.array(row[8:8 + length], dtype=float)
-            tot_time = ts[-1]
-            if float(tot_time) > 900:
-                sizes = np.array(row[9 + length:-1], dtype=int)
-                ts_diff = np.ediff1d(ts)
-                sz_diff = np.array(sizes[1:], dtype=float)
-                inst_tput_arry = div0(sz_diff, ts_diff)  #sz_diff/ts_diff
-                inst_tput = np.nanmax(inst_tput_arry) / (1000 * 1000)
-                sizes_sum = np.sum(sizes)
-                
-                tput = sizes_sum / (tot_time * 1000)
-                tput_dict = {
-                    os.path.basename(file_path): {
-                        "src_ip": row[1],
-                        "dst_ip": row[3],
-                        "src_port": row[2],
-                        "dst_port": row[4],
-                        "total_size": sizes_sum,
-                        "total_time": tot_time,
-                        "num_packets": length,
-                        "init_ts": row[6],
-                        "avg_tput": tput,
-                        "inst_tput": inst_tput
+def calc_tput(csv_input_file):
+    base_filename = os.path.basename(csv_input_file)
+    write_to_file("File-name ", base_filename)
+    with open(csv_input_file, 'r') as csv_file:
+        j = 1
+        port_nums = []        
+        reader = csv.reader(csv_file)
+        for j, row in enumerate(reader):
+            for key in company_ports:
+                if base_filename[0:4] == key[0:4]:
+                    port_nums = company_ports[key]
+            if int(row[2]) in (port_nums + common_ports) or int(
+                    row[4]) in (port_nums + common_ports):
+                length = int(row[7])
+                ts = np.array(row[8:8 + length], dtype=float)
+                tot_time = ts[-1]
+                if float(tot_time) > 750:
+                    sizes = np.array(row[9 + length:-1], dtype=int)
+                    ts_diff = np.ediff1d(ts)
+                    sz_diff = np.array(sizes[1:], dtype=float)
+                    inst_tput_arry = div0(sz_diff, ts_diff)
+                    inst_tput = np.nanmax(inst_tput_arry) / (1000 * 1000)
+                    sizes_sum = np.sum(sizes)
+                    avg_tput = sizes_sum / (tot_time * 1000)
+                    tput_dict = {
+                        base_filename: {
+                            "src_ip": row[1],
+                            "dst_ip": row[3],
+                            "src_port": row[2],
+                            "dst_port": row[4],
+                            "total_size": sizes_sum,
+                            "total_time": tot_time,
+                            "num_packets": length,
+                            "init_ts": row[6],
+                            "avg_tput": "{} KBPS".format(avg_tput),
+                            "inst_tput": "{} MBPS".format(inst_tput)
+                        }
                     }
-                }
-                print("tput_dict is ", tput_dict)
-                write_to_file("tput_data.txt", tput_dict)
-        j = j + 1
+                    print("tput_dict is ", tput_dict)
+                    write_to_file("tput_data.txt", tput_dict)
+            j = j + 1
+
+
+if __name__ == '__main__':
+
+    parser = ArgumentParser()
+    parser.add_argument("-f", "--file", help="Input CSV file")
+    args = parser.parse_args()
+    args_dict = vars(args)
+    calc_tput(args_dict['file'])
