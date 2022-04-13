@@ -7,7 +7,7 @@ from argparse import ArgumentParser
 
 company_ports = {
     "webex": [9000, 5004],
-    "teams": [3478, 3479, 3480, 3481],
+    "teams": [3479, 3480, 3481],
     "zoom": [8801, 8802],
     "google": [19302, 19303, 19304, 19305, 19306, 19307, 19308, 19309, 3478]
 }
