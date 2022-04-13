@@ -42,6 +42,7 @@ def div0(a, b, fill=np.nan):
 def calc_tput(csv_input_file):
     base_filename = os.path.basename(csv_input_file)
     write_to_file("tput_data.txt", "File-name {}".format(base_filename))
+    total_avg_tput = 0
     with open(csv_input_file, 'r') as csv_file:
         j = 1
         port_nums = []        
@@ -63,6 +64,7 @@ def calc_tput(csv_input_file):
                     inst_tput = np.nanmax(inst_tput_arry) / (1000 * 1000)
                     sizes_sum = np.sum(sizes)
                     avg_tput = sizes_sum / (tot_time * 1000)
+                    total_avg_tput = total_avg_tput + avg_tput
                     tput_dict = {
                         base_filename: {
                             "src_ip": row[1],
@@ -80,6 +82,7 @@ def calc_tput(csv_input_file):
                     print("tput_dict is ", tput_dict)
                     write_to_file("tput_data.txt", tput_dict)
             j = j + 1
+    write_to_file("tput_data.txt", "Total avg throughput - {}".format(total_avg_tput))
 
 
 if __name__ == '__main__':
