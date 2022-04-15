@@ -15,7 +15,6 @@ CLASS_LABELS = {"voip": 0, "video": 1, "file_transfer": 2, "chat": 3, "browsing"
 size_dict = {"reg": 635, "vpn": 242, "tor": 422}
 TPS = 60  # TimePerSession in secs
 balanced_dataset = 1
-file_save_dir = 'input'
 np.random.seed(0)
 
 
@@ -93,6 +92,7 @@ def export_dataset(class_dir):
     traffic_ctg = class_dir.split("/")[2]
     traffic_enc = class_dir.split("/")[3]
     dataset = traffic_class_converter(class_dir)
+    file_save_dir = 'input'
     if balanced_dataset:
         rand_samples = random.sample(range(0, dataset.shape[0]), size_dict[traffic_enc])
         sze = np.array(rand_samples)
