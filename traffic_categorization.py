@@ -26,11 +26,11 @@ cnn_model = "lenet5"
 class_names = ["voip", "video", "file_transfer", "chat", "browsing"]
 num_classes = len(class_names)
 traffic_file_types = ['reg', 'tor', 'vpn']
-traffic_file_type = 'merged'
+traffic_file_type = 'reg'
 balanced_dataset = 1
 input_file_dir = 'output'
 MODEL_NAME = "traffic_categorization_{}".format(traffic_file_type)
-merged_dataset = 1
+merged_dataset = 0
 if balanced_dataset:
     input_file_dir = 'output_bal'
     MODEL_NAME = "traffic_categorization_{}_bal".format(traffic_file_type)
@@ -60,7 +60,7 @@ epochs = 40
 print_saperator = "###################################################################################################################"
 
 # input hist dimensions
-height, width = 1504, 1504
+height, width = 1500, 1500
 input_shape = (1, height, width)
 
 
