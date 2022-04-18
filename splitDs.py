@@ -5,7 +5,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 VOIP = ["discord", "slack", "skype", "google", "teams", "webex", "zoom"]
-STREAMING = ["hbo", "hulu", "peacock", "prime"]
+STREAMING = ["disney", "hbo", "hulu", "peacock", "prime"]
 VOIP_CATEGORIES = ["audio", "", "wb", "all", "vpn"]
 STREAMING_CATEGORIES = ["", "vpn"]
 input_file_dir = 'input'
@@ -44,8 +44,8 @@ def save_voip_to_file(data_type, traffic_file_type, d1, d2, d3, d4, d5, d6, d7):
     del d7
 
 
-def save_stream_to_file(data_type, stream_file_type, d1, d2, d3, d4):
-    np_data = np.concatenate((d1, d2, d3, d4), axis=0)
+def save_stream_to_file(data_type, stream_file_type, d1, d2, d3, d4, d5):
+    np_data = np.concatenate((d1, d2, d3, d4, d5), axis=0)
     
     if stream_file_type == "":
         output_file_dir = "output/streaming/{}".format("video")
@@ -59,6 +59,7 @@ def save_stream_to_file(data_type, stream_file_type, d1, d2, d3, d4):
     del d2
     del d3
     del d4
+    del d5
 
 
 def main():
@@ -142,12 +143,15 @@ def main():
         b4 = np.load('{}/{}{}.npz'.format(input_file_dir, STREAMING[3], stream_file_type))
         xs4_train, xs4_val, xs4_test, ys4_train, ys4_val, ys4_test = get_train_test_val(b4['X'], b4['Y'])
 
-        save_stream_to_file('x_train', stream_file_type, xs1_train, xs2_train, xs3_train, xs4_train)
-        save_stream_to_file('x_val', stream_file_type, xs1_val, xs2_val, xs3_val, xs4_val)
-        save_stream_to_file('x_test', traffic_file_type, xs1_test, xs2_test, xs3_test, xs4_test)
-        save_stream_to_file('y_train', traffic_file_type, ys1_train, ys2_train, ys3_train, ys4_train)
-        save_stream_to_file('y_val', traffic_file_type, ys1_val, ys2_val, ys3_val, ys4_val)
-        save_stream_to_file('y_test', traffic_file_type, ys1_test, ys2_test, ys3_test, ys4_test)
+        b5 = np.load('{}/{}{}.npz'.format(input_file_dir, STREAMING[4], stream_file_type))
+        xs5_train, xs5_val, xs5_test, ys5_train, ys5_val, ys5_test = get_train_test_val(b5['X'], b5['Y'])
+
+        save_stream_to_file('x_train', stream_file_type, xs1_train, xs2_train, xs3_train, xs4_train, xs5_train)
+        save_stream_to_file('x_val', stream_file_type, xs1_val, xs2_val, xs3_val, xs4_val, xs5_val)
+        save_stream_to_file('x_test', traffic_file_type, xs1_test, xs2_test, xs3_test, xs4_test, xs5_test)
+        save_stream_to_file('y_train', traffic_file_type, ys1_train, ys2_train, ys3_train, ys4_train, ys5_train)
+        save_stream_to_file('y_val', traffic_file_type, ys1_val, ys2_val, ys3_val, ys4_val, ys5_val)
+        save_stream_to_file('y_test', traffic_file_type, ys1_test, ys2_test, ys3_test, ys4_test, ys5_test)
 
 
 
