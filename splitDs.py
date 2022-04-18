@@ -154,10 +154,10 @@ def main():
 
         save_stream_to_file('x_train', stream_file_type, xs1_train, xs2_train, xs3_train, xs4_train, xs5_train)
         save_stream_to_file('x_val', stream_file_type, xs1_val, xs2_val, xs3_val, xs4_val, xs5_val)
-        save_stream_to_file('x_test', traffic_file_type, xs1_test, xs2_test, xs3_test, xs4_test, xs5_test)
-        save_stream_to_file('y_train', traffic_file_type, ys1_train, ys2_train, ys3_train, ys4_train, ys5_train)
-        save_stream_to_file('y_val', traffic_file_type, ys1_val, ys2_val, ys3_val, ys4_val, ys5_val)
-        save_stream_to_file('y_test', traffic_file_type, ys1_test, ys2_test, ys3_test, ys4_test, ys5_test)
+        save_stream_to_file('x_test', stream_file_type, xs1_test, xs2_test, xs3_test, xs4_test, xs5_test)
+        save_stream_to_file('y_train', stream_file_type, ys1_train, ys2_train, ys3_train, ys4_train, ys5_train)
+        save_stream_to_file('y_val', stream_file_type, ys1_val, ys2_val, ys3_val, ys4_val, ys5_val)
+        save_stream_to_file('y_test', stream_file_type, ys1_test, ys2_test, ys3_test, ys4_test, ys5_test)
 
 
 
