@@ -92,7 +92,7 @@ def main():
         a7 = np.load('{}/{}{}.npz'.format(input_file_dir, VOIP[6], traffic_file_type))
         x7_train, x7_val, x7_test, y7_train, y7_val, y7_test = get_train_test_val(a7['X'], a7['Y'])
 
-        print("Done splitting")
+        print("Done VoIP splitting")
 
         if traffic_file_type == "all":
             save_voip_to_file('x_train', traffic_file_type, None, None, None, x4_train, x5_train, x6_train, x7_train)
@@ -145,6 +145,8 @@ def main():
 
         b5 = np.load('{}/{}{}.npz'.format(input_file_dir, STREAMING[4], stream_file_type))
         xs5_train, xs5_val, xs5_test, ys5_train, ys5_val, ys5_test = get_train_test_val(b5['X'], b5['Y'])
+
+        print("Done Stream splitting")
 
         save_stream_to_file('x_train', stream_file_type, xs1_train, xs2_train, xs3_train, xs4_train, xs5_train)
         save_stream_to_file('x_val', stream_file_type, xs1_val, xs2_val, xs3_val, xs4_val, xs5_val)
