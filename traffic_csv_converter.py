@@ -12,7 +12,7 @@ import glob
 from argparse import ArgumentParser
 
 CLASSES_DIR = "../PcapsVoip/**/"
-CLASS_LABELS = {"webex": 0, "zoom": 1, "slack": 2, "skype": 3, "teams": 4, "discord": 5, "google":6, "webexaudio": 7, "zoomaudio": 8, "slackaudio": 9, "skypeaudio": 10, "teamsaudio": 11, "discordaudio": 12, "googleaudio": 13, "webexwb": 14, "zoomwb": 15, "slackwb": 16, "skypewb": 17, "teamswb": 18, "discordwb": 19, "googlewb":20, "webexvpn": 21, "zoomvpn": 22, "slackvpn": 23, "skypevpn": 24, "teamsvpn": 25, "discordvpn": 26, "googlevpn":27, "hulu": 28, "huluvpn": 29, "webexall": 30, "zoomall": 31, "teamsall": 32, "googleall": 33,  "prime": 34, "primevpn": 35,  "peacock": 36, "peacockvpn": 37, "hbo": 38, "hbovpn": 39}
+CLASS_LABELS = {"webex": 0, "zoom": 1, "slack": 2, "skype": 3, "teams": 4, "discord": 5, "google":6, "webexaudio": 7, "zoomaudio": 8, "slackaudio": 9, "skypeaudio": 10, "teamsaudio": 11, "discordaudio": 12, "googleaudio": 13, "webexwb": 14, "zoomwb": 15, "slackwb": 16, "skypewb": 17, "teamswb": 18, "discordwb": 19, "googlewb":20, "webexvpn": 21, "zoomvpn": 22, "slackvpn": 23, "skypevpn": 24, "teamsvpn": 25, "discordvpn": 26, "googlevpn":27, "hulu": 28, "huluvpn": 29, "webexall": 30, "zoomall": 31, "teamsall": 32, "googleall": 33,  "prime": 34, "primevpn": 35,  "peacock": 36, "peacockvpn": 37, "hbo": 38, "hbovpn": 39, "disney": 40, "disneyvpn": 41}
 size_dict = {"reg": 635, "vpn": 242, "tor": 422}
 TPS = 60  # TimePerSession in secs
 balanced_dataset = 0
