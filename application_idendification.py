@@ -61,7 +61,7 @@ height, width = 1500, 1500
 input_shape = (1, height, width)
 
 
-def change_y_value(y, from_values):
+def change_y_value(y):
     #from_values = [7,8,9,10,11,12,13]
     sort_idx = np.argsort(from_values)
     idx = np.searchsorted(from_values, y, sorter=sort_idx)
