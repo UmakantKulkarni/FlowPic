@@ -19,14 +19,41 @@ from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint
 from tensorflow.keras import backend as K
 from tensorflow.keras.metrics import top_k_categorical_accuracy
 
-class_names = ["discord", "slack", "skype", "google", "teams", "webex", "zoom"]
-num_classes = len(class_names)
-traffic_file_types = ["audio", "video", "wb", "all", "vpn"]
 traffic_file_type = "audio"
 from_values = [7, 8, 9, 10, 11, 12, 13]
+
+#traffic_file_type = "video"
+#from_values = [0, 1, 2, 3, 4, 5, 6]
+
+#traffic_file_type = "wb"
+#from_values = [14, 15, 16, 17, 18, 19, 20]
+
+#traffic_file_type = "all"
+#from_values = [30, 31, 32, 33]
+
+#traffic_file_type = "vpn"
+#from_values = [21, 22, 23, 24, 25, 26, 27]
+
+#traffic_file_type = "video"
+#from_values = [28, 34, 36, 38, 40]
+
+#traffic_file_type = "vpn"
+#from_values = [29, 35, 37, 39, 41]
+
+class_names = ["webex", "zoom", "slack", "skype", "teams", "discord", "google"]
+#class_names = ["webex", "zoom", "teams", "google"]
+num_classes = len(class_names)
+traffic_file_types = ["audio", "video", "wb", "all", "vpn"]
+catg = "voip"
+
+#class_names = ["hulu", "prime", "peacock", "hbo", "disney"]
+#num_classes = len(class_names)
+#traffic_file_types = ["video", "vpn"]
+#catg = "streaming"
+
 balanced_dataset = 0
-input_file_dir = "output/voip/{}".format(traffic_file_type)
-MODEL_NAME = "application_identification_voip_{}".format(traffic_file_type)
+input_file_dir = "output/{}/{}".format(catg, traffic_file_type)
+MODEL_NAME = "application_identification_{}_{}".format(catg, traffic_file_type)
 
 merged_dataset = 0
 if balanced_dataset:
