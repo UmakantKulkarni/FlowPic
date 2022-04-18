@@ -26,9 +26,11 @@ def save_voip_to_file(data_type, traffic_file_type, d1, d2, d3, d4, d5, d6, d7):
     
     if traffic_file_type == "":
         output_file_dir = "output/voip/{}".format("video")
+        os.makedirs(output_file_dir, exist_ok=True)
         np.save(os.path.join(output_file_dir, '{}_{}'.format("video", data_type)), np_data)
     else:
         output_file_dir = "output/voip/{}".format(traffic_file_type)
+        os.makedirs(output_file_dir, exist_ok=True)
         np.save(os.path.join(output_file_dir, '{}_{}'.format(traffic_file_type, data_type)), np_data)
 
     del np_data
@@ -49,9 +51,11 @@ def save_stream_to_file(data_type, stream_file_type, d1, d2, d3, d4, d5):
     
     if stream_file_type == "":
         output_file_dir = "output/streaming/{}".format("video")
+        os.makedirs(output_file_dir, exist_ok=True)
         np.save(os.path.join(output_file_dir, '{}_{}'.format("video", data_type)), np_data)
     else:
         output_file_dir = "output/streaming/{}".format(stream_file_type)
+        os.makedirs(output_file_dir, exist_ok=True)
         np.save(os.path.join(output_file_dir, '{}_{}'.format(stream_file_type, data_type)), np_data)
 
     del np_data
