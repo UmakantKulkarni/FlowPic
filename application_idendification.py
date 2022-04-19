@@ -20,36 +20,34 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.metrics import top_k_categorical_accuracy
 
 traffic_file_type = "audio"
-from_values = [7, 8, 9, 10, 11, 12, 13]
+from_values = [1, 2, 3, 4, 5, 6, 7]
 
 #traffic_file_type = "video"
-#from_values = [0, 1, 2, 3, 4, 5, 6]
+#from_values = [8, 9, 10, 11, 12, 13, 14]
 
 #traffic_file_type = "wb"
-#from_values = [14, 15, 17, 18, 19, 20]
+#from_values = [15, 16, 17, 18, 19, 20, 21]
 
 #traffic_file_type = "all"
-#from_values = [30, 31, 32, 33]
+#from_values = [22, 23, 24, 25, 26, 27, 28] 
 
 #traffic_file_type = "vpn"
-#from_values = [21, 22, 23, 24, 25, 26, 27]
+#from_values = [29, 30, 31, 32, 33, 34, 35]
 
 #traffic_file_type = "video"
-#from_values = [28, 34, 36, 38, 40]
+#from_values = [36, 37, 38, 39, 40]
 
 #traffic_file_type = "vpn"
-#from_values = [29, 35, 37, 39, 41]
+#from_values = [41, 42, 43, 44, 45]
 
-class_names = ["webex", "zoom", "slack", "skype", "teams", "discord", "google"]
-#class_names = ["webex", "zoom", "skype", "teams", "discord", "google"]
-#class_names = ["webex", "zoom", "teams", "google"]
+class_names = ["discord", "google", "skype", "slack", "teams", "webex", "zoom"]
 num_classes = len(class_names)
 traffic_file_types = ["audio", "video", "wb", "all", "vpn"]
 catg = "voip"
 
-#class_names = ["hulu", "prime", "peacock", "hbo", "disney"]
+#class_names = ["disney", "hbo", "hulu", "peacock", "prime"]
 #num_classes = len(class_names)
-#traffic_file_types = ["video", "vpn"]
+#traffic_file_types = ["reg", "vpn"]
 #catg = "streaming"
 
 balanced_dataset = 0
