@@ -26,7 +26,7 @@ from_values = [7, 8, 9, 10, 11, 12, 13]
 #from_values = [0, 1, 2, 3, 4, 5, 6]
 
 #traffic_file_type = "wb"
-#from_values = [14, 15, 16, 17, 18, 19, 20]
+#from_values = [14, 15, 17, 18, 19, 20]
 
 #traffic_file_type = "all"
 #from_values = [30, 31, 32, 33]
@@ -41,6 +41,7 @@ from_values = [7, 8, 9, 10, 11, 12, 13]
 #from_values = [29, 35, 37, 39, 41]
 
 class_names = ["webex", "zoom", "slack", "skype", "teams", "discord", "google"]
+#class_names = ["webex", "zoom", "skype", "teams", "discord", "google"]
 #class_names = ["webex", "zoom", "teams", "google"]
 num_classes = len(class_names)
 traffic_file_types = ["audio", "video", "wb", "all", "vpn"]
@@ -626,7 +627,7 @@ def stats(y_true, y_pred):
             1 for i, pred in enumerate(y_pred)
             if (pred == class_ind and y_true[i][pred] == 1)
         ])
-        print(class_ind, total_ind, correct_ind, correct_ind * 1.0 / total_ind)
+        print("class_ind, total_ind, correct_ind, correct_ind/total_ind - ", class_ind, total_ind, correct_ind, correct_ind * 1.0 / total_ind)
 
 
 stats(y_val, y_val_prediction)
