@@ -34,7 +34,7 @@ from_values = [1, 2, 3, 4, 5, 6, 7]
 #traffic_file_type = "vpn"
 #from_values = [29, 30, 31, 32, 33, 34, 35]
 
-#traffic_file_type = "video"
+#traffic_file_type = "reg"
 #from_values = [36, 37, 38, 39, 40]
 
 #traffic_file_type = "vpn"
