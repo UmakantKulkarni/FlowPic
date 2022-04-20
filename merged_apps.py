@@ -64,8 +64,8 @@ elif  catg == "merged_all": #voip+voip_vpn+streaming+streaming_vpn
     input_file_dir_4 = "output/streaming/vpn"
     PATH_PREFIX_1 = "/mydata/FlowPic/{}/".format(input_file_dir_1)
     PATH_PREFIX_2 = "/mydata/FlowPic/{}/".format(input_file_dir_2)
-    PATH_PREFIX_3 = "/mydata/FlowPic/{}/".format(input_file_dir_1)
-    PATH_PREFIX_4 = "/mydata/FlowPic/{}/".format(input_file_dir_2)
+    PATH_PREFIX_3 = "/mydata/FlowPic/{}/".format(input_file_dir_3)
+    PATH_PREFIX_4 = "/mydata/FlowPic/{}/".format(input_file_dir_4)
     from_values = [8, 9, 10, 11, 12, 13, 14, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45]
 
 
