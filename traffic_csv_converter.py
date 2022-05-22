@@ -89,12 +89,14 @@ def traffic_class_converter(dir_path):
 
 
 def export_dataset(csv_file):
-    traffic_type = csv_file.split('.')[0].split('/')[-1]
+    #traffic_type = csv_file.split('.')[0].split('/')[-1]
+    #traffic_type = "zoomvideo"
+    traffic_type = "disneyreg"
     print("Working on " + csv_file)
     dataset = traffic_csv_converter(csv_file, traffic_type)
     print("Dataset shape is ", dataset.shape)
-    labels = [CLASS_LABELS[traffic_type]]*dataset.shape[0]
-    np.savez(os.path.join(file_save_dir, traffic_type), X=dataset, Y=labels)
+    #labels = [CLASS_LABELS[traffic_type]]*dataset.shape[0]
+    #np.savez(os.path.join(file_save_dir, traffic_type), X=dataset, Y=labels)
     print("Exported " + csv_file)
 
 

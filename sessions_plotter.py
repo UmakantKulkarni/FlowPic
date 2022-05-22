@@ -1,29 +1,61 @@
 #!/usr/bin/env python3
 
 import os
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import time
 from pylab import rcParams
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+matplotlib.rcParams.update({'font.size': 16})
+#import plotly.graph_objects as go
 
-image_dir = '/home/ukulkarn/FlowPic/images'
+image_dir = '/Users/umakantkulkarni/Github/FlowPic/images'
 MTU = 1500
 
 
+def session_spectogram_new(ts, sizes, traffic_type, name=None):
+    fig = go.Figure(data=go.Scattergl(
+    x = ts,
+    y = sizes,
+    mode='markers',
+    marker=dict(
+        color="black",
+        symbol="square-dot"
+    )
+))
+
+
 def session_spectogram(ts, sizes, traffic_type, name=None):
+    tsc = list(ts.copy())
+    sizesc = list(sizes.copy())
+    ck = 0
+    pk = 0
+    print(len(sizes))
+    while ck < len(sizes)-1:
+        ck = ck + 1
+        if sizes[ck] == sizes[ck-1] and ts[ck] == ts[ck-1]:
+            pk = pk + 1
+            del sizesc[ck-pk]
+            del tsc[ck-pk]
+    print("pk", pk)
+    ts = tsc.copy()
+    sizes = sizesc.copy()
     op_dir = '{}/{}/'.format(image_dir, traffic_type)
     plt.scatter(ts, sizes, marker='s', s=rcParams['lines.markersize'] ** 1, c="0.1")
-    plt.ylim(0, MTU)
-    plt.xlim(0, MTU)
-    # plt.yticks(np.arange(0, MTU, 10))
-    # plt.xticks(np.arange(int(ts[0]), int(ts[-1]), 10))
-    plt.title("{} session spectogram".format(traffic_type))
+    plt.ylim(0, MTU+20)
+    plt.xlim(0, MTU+20)
+    plt.xticks(np.arange(0, MTU+20, 300))
+    plt.yticks(np.arange(0, MTU+20, 300))
+    #plt.title("{} session spectogram".format(traffic_type))
     plt.ylabel('Size [B]')
     plt.xlabel('Time [sec]')
     #plt.grid(True)
     #plt.show()
-    plt_name = op_dir + traffic_type + '_' + str(name) + '.png'
-    plt.savefig(plt_name)
+    plt.tight_layout()
+    plt_name = op_dir + traffic_type + '_' + str(name) + '.pdf'
+    plt.savefig(plt_name, bbox_inches='tight')
     plt.close()
 
 
